@@ -1,0 +1,87 @@
+﻿@using EmployeesManager.Model
+@model IEnumerable<Employee>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<partial name="_Notification" />
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Popis zaposlenika</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Employee" asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> &nbsp; Novi zaposlenik</a>
+        </div>
+    </div>
+    <br /><br />
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.Label("Ime")
+            </th>
+            <th>
+                @Html.Label("Prezime")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OIB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MBO)
+            </th>
+            <th>
+                @Html.Label("Aktivan/na")
+            </th>
+            <th>
+                @Html.Label("Datum rođenja")
+            </th>
+        @*    <th>
+                @Html.Label("Adresa")
+            </th>
+            <th>
+                @Html.Label("Kontakt")
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OIB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MBO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+         @*   <td>
+                @Html.DisplayFor(modelItem => item.Address.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contact.Id)
+            </td>*@
+            <td>
+                <div class="btn-group" role="group">
+                    <a asp-controller="Employee" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary mx-2"><i class="bi bi-pen-fill"></i> &nbsp Uredi</a>
+                     <a asp-controller="Employee" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger mx-2"><i class="bi bi-trash3-fill"></i> &nbsp Obriši</a>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
