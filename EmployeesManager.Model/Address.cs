@@ -10,14 +10,16 @@ namespace EmployeesManager.Model
 {
     public class Address
     {
-        [ForeignKey("Employee")]
-        public int Id { get; set; }
+        [Key]
+        public int AddressId { get; set; }
         public string Street { get; set; }
         public string StreetNumber { get; set; }
         public int PostalCode { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
 
-        public virtual Employee Employee { get; set; }
+        [ForeignKey("Employee")]
+        public int EmployeeId { get; set; }
+        public Employee Employee { get; set; }
     }
 }

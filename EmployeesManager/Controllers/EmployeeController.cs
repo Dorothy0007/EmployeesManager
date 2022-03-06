@@ -20,24 +20,43 @@ namespace EmployeesManager.Web.Controllers
         }
 
         // GET
+        [HttpGet]
         public IActionResult Create()
         {
+            //Employee employee = new Employee();
+            //employee.Address = new Address();
+            //employee.Contact = new Contact();
             return View();
         }
 
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Employee emp)
+        public IActionResult Create(Employee employee)
         {
+            //if (ModelState.IsValid)
+            //{
+            //    _db.Employees.Add(emp);
+            //    _db.SaveChanges();
+            //    TempData["success"] = "Uspješno dodavanje novog zaposlenika!";
+            //    return RedirectToAction("Index");
+            //}
+            //return View(emp);
+            //employee.Address.Id = employee.Id;
+            //employee.Contact.Id = employee.Id;
+
+            //employee.Address.Employee = employee;
+            //employee.Contact.Employee = employee;
+
             if (ModelState.IsValid)
             {
-                _db.Employees.Add(emp);
+                _db.Employees.Add(employee);
+
                 _db.SaveChanges();
                 TempData["success"] = "Uspješno dodavanje novog zaposlenika!";
                 return RedirectToAction("Index");
             }
-            return View(emp);
+            return View(employee);
         }
 
         // GET
@@ -63,7 +82,7 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int? id, Employee emp)
         {
-            if (id != emp.Id)
+            if (id != emp.EmployeeId)
             {
                 return NotFound();
             }

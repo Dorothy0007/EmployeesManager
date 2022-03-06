@@ -13,5 +13,8 @@ namespace EmployeesManager.DAL
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Employee> Addresses { get; set; }
         public DbSet<Employee> Contacts { get; set; }
+
+        
+
     }
 }

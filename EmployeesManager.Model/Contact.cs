@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace EmployeesManager.Model
 {
-    public  class Contact
+    public class Contact
     {
-        [ForeignKey("Employee")]
-        public int Id { get; set; }
+        [Key]
+        public int ContactId { get; set; }
 
         [Required]
         [Display(Name = "Privatna adresa e-pošte")]
@@ -32,6 +32,8 @@ namespace EmployeesManager.Model
         [Display(Name = "Privatni broj mobitela")]
         public string PrivateMobilePhone { get; set; }
 
-        public virtual Employee Employee { get; set; }
+        [ForeignKey("Employee")]
+        public int EmployeeId { get; set;}
+        public Employee Employee { get; set; }
     }
 }
