@@ -34,6 +34,33 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Employee employee)
         {
+            Employee emp = new Employee();
+
+            emp.EmployeeId = employee.EmployeeId;
+            emp.MBO = employee.MBO;
+            emp.FirstName = employee.FirstName;
+            emp.LastName = employee.LastName;
+            emp.OIB = employee.OIB;
+            emp.Active = employee.Active;
+            emp.BirthDate = employee.BirthDate;
+
+            Contact contact = new Contact();
+            contact.BusinessTelephone = employee.Contact.BusinessTelephone;
+            contact.BusinessEmail = employee.Contact.BusinessEmail;
+            contact.PrivateEmail = employee.Contact.PrivateEmail;
+            contact.PrivateMobilePhone = employee.Contact.PrivateMobilePhone;
+            contact.BusinessMobilePhone = employee.Contact.BusinessMobilePhone;
+
+            Address address = new Address();
+            address.Street = employee.Address.Street;
+            address.StreetNumber = employee.Address.StreetNumber;
+            address.Country = employee.Address.Country;
+            address.City = employee.Address.City;
+            address.PostalCode = employee.Address.PostalCode;
+
+            emp.Contact = contact;
+            emp.Address = address;
+
             //if (ModelState.IsValid)
             //{
             //    _db.Employees.Add(emp);
@@ -41,22 +68,12 @@ namespace EmployeesManager.Web.Controllers
             //    TempData["success"] = "Uspješno dodavanje novog zaposlenika!";
             //    return RedirectToAction("Index");
             //}
-            //return View(emp);
-            //employee.Address.Id = employee.Id;
-            //employee.Contact.Id = employee.Id;
 
-            //employee.Address.Employee = employee;
-            //employee.Contact.Employee = employee;
+            _db.Employees.Add(emp);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
 
-            if (ModelState.IsValid)
-            {
-                _db.Employees.Add(employee);
-
-                _db.SaveChanges();
-                TempData["success"] = "Uspješno dodavanje novog zaposlenika!";
-                return RedirectToAction("Index");
-            }
-            return View(employee);
+            //return View(employee);
         }
 
         // GET

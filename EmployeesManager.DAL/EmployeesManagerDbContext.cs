@@ -14,7 +14,16 @@ namespace EmployeesManager.DAL
         public DbSet<Employee> Addresses { get; set; }
         public DbSet<Employee> Contacts { get; set; }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Address>()
+                .Property(a => a.EmployeeId).IsRequired();
+
+            modelBuilder.Entity<Contact>()
+                .Property(c => c.EmployeeId).IsRequired();
+
+
+        }
 
     }
 }
