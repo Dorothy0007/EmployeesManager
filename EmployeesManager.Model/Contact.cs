@@ -10,8 +10,8 @@ namespace EmployeesManager.Model
 {
     public  class Contact
     {
-        [ForeignKey("Employee")]
-        public int Id { get; set; }
+        [Key, ForeignKey("Employee")]
+        public int EmployeeId { get; set; }
 
         [Required]
         [Display(Name = "Privatna adresa e-pošte")]

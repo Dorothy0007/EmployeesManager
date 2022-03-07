@@ -10,8 +10,8 @@ namespace EmployeesManager.Model
 {
     public class Address
     {
-        [ForeignKey("Employee")]
-        public int Id { get; set; }
+        [Key, ForeignKey("Employee")]
+        public int EmployeeId { get; set; }
         public string Street { get; set; }
         public string StreetNumber { get; set; }
         public int PostalCode { get; set; }

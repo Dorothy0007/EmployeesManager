@@ -6,7 +6,7 @@ namespace EmployeesManager.Model
     public class Employee
     {
         [Key]
-        public int Id { get; set; }
+        public int EmployeeId { get; set; }
 
         [Display(Name = "Ime")]
         public string FirstName { get; set; }
