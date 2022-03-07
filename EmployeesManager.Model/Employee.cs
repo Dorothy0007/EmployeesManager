@@ -5,7 +5,6 @@ namespace EmployeesManager.Model
 {
     public class Employee
     {
-        [Key]
         public int EmployeeId { get; set; }
 
         [Display(Name = "Ime")]
@@ -28,10 +27,10 @@ namespace EmployeesManager.Model
         public DateTime BirthDate { get; set; }
 
         [Display(Name = "Adresa")]
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
 
         [Display(Name = "Kontakt")]
-        public virtual Contact Contact { get; set; } 
+        public Contact Contact { get; set; } 
 
         //[ForeignKey("Section")]
         //public int SectionId { get; set; }

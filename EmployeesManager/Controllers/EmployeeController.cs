@@ -1,6 +1,9 @@
 ﻿using EmployeesManager.DAL;
 using EmployeesManager.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace EmployeesManager.Web.Controllers
 {
@@ -30,6 +33,15 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Employee employee)
         {
+           
+            //employee.Contact.Employee = employee;
+            //employee.Address.Employee = employee;
+
+            //ModelState.Clear();
+            //TryValidateModel(employee);
+            //TryValidateModel(employee.Contact);
+            //TryValidateModel(employee.Address);
+
             if (ModelState.IsValid)
             {
 
@@ -42,14 +54,17 @@ namespace EmployeesManager.Web.Controllers
         }
 
         // GET
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if(id==null || id == 0)
             {
                 return NotFound();
             }
 
-            var emp = _db.Employees.Find(id);
+            //var emp = _db.Employees.Find(id);
+
+            var emp = await _db.Employees
+                .Include(e => e.Address).Include(e => e.Contact).FirstOrDefaultAsync(m => m.EmployeeId == id);
 
             if (emp == null)
             {
@@ -62,21 +77,52 @@ namespace EmployeesManager.Web.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int? id, Employee emp)
+        public async Task<IActionResult> Edit(int? id, Employee employee)
         {
-            if (id != emp.EmployeeId)
+            if (id != employee.EmployeeId)
             {
                 return NotFound();
             }
 
+            //employee.Contact.EmployeeId = employee.EmployeeId;
+            //employee.Address.EmployeeId = employee.EmployeeId;
+
+            //employee.Contact.Employee = employee;
+            //employee.Address.Employee = employee;
+
+            //if (ModelState.IsValid)
+            //{
+            //    _db.Employees.Update(employee);
+            //    _db.SaveChanges();
+            //    TempData["success"] = "Uspješno ažuriranje zaposlenika!";
+            //    return RedirectToAction("Index");
+            //}
+
             if (ModelState.IsValid)
             {
-                _db.Employees.Update(emp);
-                _db.SaveChanges();
-                TempData["success"] = "Uspješno ažuriranje zaposlenika!";
-                return RedirectToAction("Index");
+                try
+                {
+                    _db.Update(employee);
+                    await _db.SaveChangesAsync();
+                    TempData["success"] = "Uspješno ažuriranje zaposlenika!";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EmployeeExists(employee.EmployeeId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
             }
-            return View(emp);
+            //ViewData["EmployeeId"] = new SelectList(_db.Set<Address>(), "EmployeeId", "EmployeeId", employee.Address.EmployeeId);
+            //ViewData["EmployeeId"] = new SelectList(_db.Set<Contact>(), "EmployeeId", "EmployeeId", employee.Contact.EmployeeId);
+
+            return View(employee);
         }
 
         // GET
@@ -113,6 +159,11 @@ namespace EmployeesManager.Web.Controllers
             _db.SaveChanges();
             TempData["success"] = "Uspješno brisanje zaposlenika!";
             return RedirectToAction("Index");
+        }
+
+        private bool EmployeeExists(int id)
+        {
+            return _db.Employees.Any(e => e.EmployeeId == id);
         }
     }
 }

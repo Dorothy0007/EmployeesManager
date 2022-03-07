@@ -10,10 +10,6 @@ namespace EmployeesManager.DAL
 
         }
 
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<Employee> Addresses { get; set; }
-        public DbSet<Employee> Contacts { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<Address>().HasKey(a => a.EmployeeId);
@@ -25,6 +21,14 @@ namespace EmployeesManager.DAL
 
             //modelBuilder.Entity<Employee>().HasOne<Contact>(emp => emp.Contact)
             //    .WithOne(c => c.Employee);
+
+            modelBuilder.Entity<Employee>().HasOne(a => a.Address).WithOne(e => e.Employee).HasForeignKey<Address>(e => e.EmployeeId);
+
+            modelBuilder.Entity<Employee>().HasOne(c => c.Contact).WithOne(e => e.Employee).HasForeignKey<Contact>(e => e.EmployeeId);
         }
+
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Employee> Addresses { get; set; }
+        public DbSet<Employee> Contacts { get; set; }
     }
 }
