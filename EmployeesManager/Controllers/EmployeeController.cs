@@ -29,31 +29,33 @@ namespace EmployeesManager.Web.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult CreateOrEdit(EmployeeViewModel emp)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (emp.EmployeeId == 0)
-        //            _db.Employees.Add(GetEmployee(new Employee(), emp));
-        //        else
-        //        {
-        //            var exemp = _db.Employees.Find(emp.EmployeeId);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateOrEdit(EmployeeViewModel emp)
+        {
+            if (ModelState.IsValid)
+            {
+                if (emp.EmployeeId == 0)
+                    _db.Employees.Add(GetEmployee(new Employee(), emp));
+                else
+                {
+                    var exemp = _db.Employees.Find(emp.EmployeeId);
 
-        //            if (exemp == null)
-        //            {
-        //                return NotFound();
-        //            }
-        //            _db.Employees.Update(GetEmployee(exemp, emp));
-        //        }
+                    if (exemp == null)
+                    {
+                        return NotFound();
+                    }
+                    _db.Entry(exemp).Reference(x => x.Address).Load();
+                    _db.Entry(exemp).Reference(x => x.Contact).Load();
+                    _db.Employees.Update(GetEmployee(exemp, emp));
+                }
 
-        //        _db.SaveChanges();
-        //        TempData["success"] = emp.EmployeeId == 0 ? "Uspješno dodavanje novog zaposlenika!" : "Uspješno ažuriranje zaposlenika!";
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(emp);
-        //}
+                _db.SaveChanges();
+                TempData["success"] = emp.EmployeeId == 0 ? "Uspješno dodavanje novog zaposlenika!" : "Uspješno ažuriranje zaposlenika!";
+                return RedirectToAction("Index");
+            }
+            return View(emp);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -118,6 +120,9 @@ namespace EmployeesManager.Web.Controllers
             {
                 return NotFound();
             }
+
+            _db.Entry(exemp).Reference(x => x.Address).Load();
+            _db.Entry(exemp).Reference(x => x.Contact).Load();
 
             if (ModelState.IsValid)
             {
