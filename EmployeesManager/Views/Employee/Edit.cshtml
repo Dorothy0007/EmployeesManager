@@ -1,5 +1,5 @@
-﻿@using EmployeesManager.Model
-@model Employee
+﻿@using EmployeesManager.Web.Models
+@model EmployeeViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -58,52 +58,52 @@
             </div>
             </div>
             <div class="tab-pane fade" id="address">
-                   <div class="form-group">
-                <label asp-for="Address.Street" class="control-label"></label>
-                <input asp-for="Address.Street" class ="form-control"/>
+            <div class="form-group">
+                <label asp-for="Street" class="control-label"></label>
+                <input asp-for="Street" class ="form-control"/>
             </div>
             <div class="form-group">
-                <label asp-for="Address.StreetNumber" class="control-label"></label>
-                <input asp-for="Address.StreetNumber" class ="form-control"/>
+                <label asp-for="StreetNumber" class="control-label"></label>
+                <input asp-for="StreetNumber" class ="form-control"/>
             </div>
             <div class="form-group">
-                <label asp-for="Address.PostalCode" class="control-label"></label>
-                <input asp-for="Address.PostalCode" class ="form-control"/>
+                <label asp-for="PostalCode" class="control-label"></label>
+                <input asp-for="PostalCode" class ="form-control"/>
             </div>
             <div class="form-group">
-                <label asp-for="Address.City" class="control-label"></label>
-                <input asp-for="Address.City" class ="form-control"/>
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class ="form-control"/>
             </div>
             <div class="form-group">
-                <label asp-for="Address.Country" class="control-label"></label>
-                <input asp-for="Address.Country" class ="form-control"/>
+                <label asp-for="Country" class="control-label"></label>
+                <input asp-for="Country" class ="form-control"/>
             </div>
-            <input asp-for="Address.Employee" hidden/>
-            @*<input asp-for="Address.EmployeeId" hidden/>*@
-            </div>
+            @*<input asp-for="Address.Employee" hidden/>
+            <input asp-for="Address.EmployeeId" hidden/>*@
+           </div>
             <div class="tab-pane fade" id="contact">
                    <div class="form-group">
-                <label asp-for="Contact.BusinessEmail" class="control-label"></label>
-                <input asp-for="Contact.BusinessEmail" class ="form-control"/>
+                <label asp-for="BusinessEmail" class="control-label"></label>
+                <input asp-for="BusinessEmail" class ="form-control"/>
             </div>
              <div class="form-group">
-                <label asp-for="Contact.BusinessMobilePhone" class="control-label"></label>
-                <input asp-for="Contact.BusinessMobilePhone" class ="form-control"/>
+                <label asp-for="BusinessMobilePhone" class="control-label"></label>
+                <input asp-for="BusinessMobilePhone" class ="form-control"/>
             </div>
              <div class="form-group">
-                <label asp-for="Contact.BusinessTelephone" class="control-label"></label>
-                <input asp-for="Contact.BusinessTelephone" class ="form-control"/>
+                <label asp-for="BusinessTelephone" class="control-label"></label>
+                <input asp-for="BusinessTelephone" class ="form-control"/>
             </div>
              <div class="form-group">
-                <label asp-for="Contact.PrivateEmail" class="control-label"></label>
-                <input asp-for="Contact.PrivateEmail" class ="form-control"/>
+                <label asp-for="PrivateEmail" class="control-label"></label>
+                <input asp-for="PrivateEmail" class ="form-control"/>
             </div>
             <div class="form-group">
-                <label asp-for="Contact.PrivateMobilePhone" class="control-label"></label>
-                <input asp-for="Contact.PrivateMobilePhone" class ="form-control"/>
+                <label asp-for="PrivateMobilePhone" class="control-label"></label>
+                <input asp-for="PrivateMobilePhone" class ="form-control"/>
             </div>
-            <input asp-for="Contact.Employee" hidden/>
-            @*<input asp-for="Contact.EmployeeId" hidden/>*@
+            @*<input asp-for="Employee" hidden/>
+            <input asp-for="EmployeeId" hidden/>*@
             </div>
             </div>
             <br />

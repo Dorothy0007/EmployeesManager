@@ -1,5 +1,6 @@
 ﻿using EmployeesManager.DAL;
 using EmployeesManager.Model;
+using EmployeesManager.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -28,50 +29,75 @@ namespace EmployeesManager.Web.Controllers
             return View();
         }
 
-        // POST
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult CreateOrEdit(EmployeeViewModel emp)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (emp.EmployeeId == 0)
+        //            _db.Employees.Add(GetEmployee(new Employee(), emp));
+        //        else
+        //        {
+        //            var exemp = _db.Employees.Find(emp.EmployeeId);
+
+        //            if (exemp == null)
+        //            {
+        //                return NotFound();
+        //            }
+        //            _db.Employees.Update(GetEmployee(exemp, emp));
+        //        }
+
+        //        _db.SaveChanges();
+        //        TempData["success"] = emp.EmployeeId == 0 ? "Uspješno dodavanje novog zaposlenika!" : "Uspješno ažuriranje zaposlenika!";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(emp);
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeViewModel emp)
         {
-
-            //employee.Contact.Employee = employee;
-            //employee.Address.Employee = employee;
-
-            //ModelState.Clear();
-            //TryValidateModel(employee);
-            //TryValidateModel(employee.Contact);
-            //TryValidateModel(employee.Address);
-
-            //if (ModelState.IsValid)
-            //{
-            try
+            if (ModelState.IsValid)
             {
-                _db.Employees.Add(employee);
+
+                _db.Employees.Add(GetEmployee(new Employee(), emp));
                 _db.SaveChanges();
                 TempData["success"] = "Uspješno dodavanje novog zaposlenika!";
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                return View(employee);
-            }
-                
-            //}
-            
+            return View(emp);
         }
 
         // GET
         public async Task<IActionResult> Edit(int? id)
         {
-            if(id==null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
 
-            //var emp = _db.Employees.Find(id);
-
-            var emp = await _db.Employees
-                .Include(e => e.Address).Include(e => e.Contact).FirstOrDefaultAsync(m => m.EmployeeId == id);
+            var emp = _db.Employees.Where(x => x.EmployeeId == id).Select(x => new EmployeeViewModel()
+            {
+                EmployeeId = x.EmployeeId,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                OIB = x.OIB,
+                MBO = x.MBO,
+                BirthDate = x.BirthDate,
+                Street = x.Address.Street,
+                StreetNumber = x.Address.StreetNumber,
+                PostalCode = x.Address.PostalCode,
+                City = x.Address.City,
+                Country = x.Address.Country,
+                PrivateEmail = x.Contact.PrivateEmail,
+                PrivateMobilePhone = x.Contact.PrivateMobilePhone,
+                BusinessEmail = x.Contact.BusinessEmail,
+                BusinessMobilePhone = x.Contact.BusinessMobilePhone,
+                BusinessTelephone = x.Contact.BusinessTelephone,
+                Active = x.Active
+            }).FirstOrDefault();
 
             if (emp == null)
             {
@@ -84,58 +110,22 @@ namespace EmployeesManager.Web.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int? id, Employee employee)
+        public IActionResult Edit(int? id, EmployeeViewModel emp)
         {
-            if (id != employee.EmployeeId)
+            var exemp = _db.Employees.Find(id);
+
+            if (exemp == null)
             {
                 return NotFound();
             }
 
-            var emp = _db.Employees
-                .Include(e => e.Address).Include(e => e.Contact).FirstOrDefault(m => m.EmployeeId == id);
-            
-            emp.Address.StreetNumber = employee.Address.StreetNumber;
-
-            //employee.Contact.EmployeeId = employee.EmployeeId;
-            //employee.Address.EmployeeId = employee.EmployeeId;
-
-            //employee.Contact.Employee = employee;
-            //employee.Address.Employee = employee;
-
-            //if (ModelState.IsValid)
-            //{
-
-
-            _db.Employees.Update(emp);
-            _db.SaveChanges();
-            TempData["success"] = "Uspješno ažuriranje zaposlenika!";
-            return RedirectToAction("Index");
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        _db.Update(employee);
-            //        await _db.SaveChangesAsync();
-            //        TempData["success"] = "Uspješno ažuriranje zaposlenika!";
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!EmployeeExists(employee.EmployeeId))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //}
-            //return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["EmployeeId"] = new SelectList(_db.Set<Address>(), "EmployeeId", "EmployeeId", employee.Address.EmployeeId);
-            //ViewData["EmployeeId"] = new SelectList(_db.Set<Contact>(), "EmployeeId", "EmployeeId", employee.Contact.EmployeeId);
-
+            if (ModelState.IsValid)
+            {
+                _db.Employees.Update(GetEmployee(exemp, emp));
+                _db.SaveChanges();
+                TempData["success"] = "Uspješno ažuriranje zaposlenika!";
+                return RedirectToAction("Index");
+            }
             return View(emp);
         }
 
@@ -175,9 +165,39 @@ namespace EmployeesManager.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        private bool EmployeeExists(int id)
+        //private bool EmployeeExists(int id)
+        //{
+        //    return _db.Employees.Any(e => e.EmployeeId == id);
+        //}
+
+        private Employee GetEmployee(Employee newEmp, EmployeeViewModel emp)
         {
-            return _db.Employees.Any(e => e.EmployeeId == id);
+            newEmp.FirstName = emp.FirstName;
+            newEmp.LastName = emp.LastName;
+            newEmp.OIB = emp.OIB;
+            newEmp.MBO = emp.MBO;
+            newEmp.BirthDate = emp.BirthDate;
+            newEmp.Active = emp.Active;
+
+            Address adr = new Address();
+            adr.Street = emp.Street;
+            adr.StreetNumber = emp.StreetNumber;
+            adr.Country = emp.Country;
+            adr.PostalCode = emp.PostalCode;
+            adr.City = emp.City;
+
+            newEmp.Address = adr;
+
+            Contact cnt = new Contact();
+            cnt.BusinessEmail = emp.BusinessEmail;
+            cnt.BusinessTelephone = emp.BusinessTelephone;
+            cnt.BusinessMobilePhone = emp.BusinessMobilePhone;
+            cnt.PrivateMobilePhone = emp.PrivateMobilePhone;
+            cnt.PrivateEmail = emp.PrivateEmail;
+
+            newEmp.Contact = cnt;
+
+            return newEmp;
         }
     }
 }
