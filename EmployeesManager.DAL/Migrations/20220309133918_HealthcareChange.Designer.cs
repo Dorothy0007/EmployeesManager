@@ -4,6 +4,7 @@ using EmployeesManager.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeesManager.DAL.Migrations
 {
     [DbContext(typeof(EmployeesManagerDbContext))]
-    partial class EmployeesManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220309133918_HealthcareChange")]
+    partial class HealthcareChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +60,7 @@ namespace EmployeesManager.DAL.Migrations
                     b.HasIndex("EmployeeId")
                         .IsUnique();
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Contact", b =>
@@ -97,7 +99,7 @@ namespace EmployeesManager.DAL.Migrations
                     b.HasIndex("EmployeeId")
                         .IsUnique();
 
-                    b.ToTable("Contacts", (string)null);
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Employee", b =>
@@ -132,7 +134,7 @@ namespace EmployeesManager.DAL.Migrations
 
                     b.HasKey("EmployeeId");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Healthcare", b =>
@@ -160,7 +162,7 @@ namespace EmployeesManager.DAL.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Healthcares", (string)null);
+                    b.ToTable("Healthcares");
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Address", b =>

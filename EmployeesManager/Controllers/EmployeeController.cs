@@ -26,6 +26,11 @@ namespace EmployeesManager.Web.Controllers
         // GET
         public IActionResult Create()
         {
+            //Employee employee = new Employee();
+            //employee.Healthcares.Add(new Healthcare() { HealthcareId = 1 });
+            //employee.Healthcares.Add(new Healthcare() { HealthcareId = 2 });
+            //employee.Healthcares.Add(new Healthcare() { HealthcareId = 3 });
+
             return View();
         }
 
@@ -35,8 +40,21 @@ namespace EmployeesManager.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                //if (emp.EmployeeId == 0)
+                //{
+                //    foreach (Healthcare healthcare in emp.Healthcares)
+                //    {
+                //        if(healthcare.HealthcareName.ToString() == null)
+                //        {
+                //            emp.Healthcares.Remove(healthcare);
+                //        }
+                //    }
+                //    _db.Employees.Add(GetEmployee(new Employee(), emp));
+                //}
+
                 if (emp.EmployeeId == 0)
                     _db.Employees.Add(GetEmployee(new Employee(), emp));
+                
                 else
                 {
                     var exemp = _db.Employees.Find(emp.EmployeeId);
@@ -47,6 +65,7 @@ namespace EmployeesManager.Web.Controllers
                     }
                     _db.Entry(exemp).Reference(x => x.Address).Load();
                     _db.Entry(exemp).Reference(x => x.Contact).Load();
+                    _db.Entry(exemp).Collection(x => x.Healthcares).Load();
                     _db.Employees.Update(GetEmployee(exemp, emp));
                 }
 
@@ -57,20 +76,20 @@ namespace EmployeesManager.Web.Controllers
             return View(emp);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(EmployeeViewModel emp)
-        {
-            if (ModelState.IsValid)
-            {
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Create(EmployeeViewModel emp)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
 
-                _db.Employees.Add(GetEmployee(new Employee(), emp));
-                _db.SaveChanges();
-                TempData["success"] = "Uspješno dodavanje novog zaposlenika!";
-                return RedirectToAction("Index");
-            }
-            return View(emp);
-        }
+        //        _db.Employees.Add(GetEmployee(new Employee(), emp));
+        //        _db.SaveChanges();
+        //        TempData["success"] = "Uspješno dodavanje novog zaposlenika!";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(emp);
+        //}
 
         // GET
         public async Task<IActionResult> Edit(int? id)
@@ -99,7 +118,10 @@ namespace EmployeesManager.Web.Controllers
                 BusinessMobilePhone = x.Contact.BusinessMobilePhone,
                 BusinessTelephone = x.Contact.BusinessTelephone,
                 Active = x.Active
+
             }).FirstOrDefault();
+
+            
 
             if (emp == null)
             {
@@ -110,29 +132,29 @@ namespace EmployeesManager.Web.Controllers
         }
 
         // POST
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int? id, EmployeeViewModel emp)
-        {
-            var exemp = _db.Employees.Find(id);
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Edit(int? id, EmployeeViewModel emp)
+        //{
+        //    var exemp = _db.Employees.Find(id);
 
-            if (exemp == null)
-            {
-                return NotFound();
-            }
+        //    if (exemp == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _db.Entry(exemp).Reference(x => x.Address).Load();
-            _db.Entry(exemp).Reference(x => x.Contact).Load();
+        //    _db.Entry(exemp).Reference(x => x.Address).Load();
+        //    _db.Entry(exemp).Reference(x => x.Contact).Load();
 
-            if (ModelState.IsValid)
-            {
-                _db.Employees.Update(GetEmployee(exemp, emp));
-                _db.SaveChanges();
-                TempData["success"] = "Uspješno ažuriranje zaposlenika!";
-                return RedirectToAction("Index");
-            }
-            return View(emp);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        _db.Employees.Update(GetEmployee(exemp, emp));
+        //        _db.SaveChanges();
+        //        TempData["success"] = "Uspješno ažuriranje zaposlenika!";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(emp);
+        //}
 
         // GET
         public IActionResult Delete(int? id)
@@ -201,6 +223,13 @@ namespace EmployeesManager.Web.Controllers
             cnt.PrivateEmail = emp.PrivateEmail;
 
             newEmp.Contact = cnt;
+
+            Healthcare hlt = new Healthcare();
+            hlt.HealthcareName = emp.HealthcareName;
+            hlt.ValidUntil = emp.ValidUntil;
+            hlt.Remark = emp.Remark;
+
+            newEmp.Healthcares.Add(hlt);
 
             return newEmp;
         }

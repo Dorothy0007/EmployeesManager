@@ -1,4 +1,5 @@
-﻿@using EmployeesManager.Web.Models
+﻿@using EmployeesManager.Model
+@using EmployeesManager.Web.Models
 @model EmployeeViewModel
 
 @{
@@ -20,6 +21,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#contact">Kontakt</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#healthcare">Praćenje zdravlja</a>
             </li>
         </ul>
         <hr />
@@ -104,6 +108,22 @@
             </div>
             @*<input asp-for="Employee" hidden/>
             <input asp-for="EmployeeId" hidden/>*@
+            </div>
+            <div class="tab-pane fade" id="healthcare">
+                <div class="form-group">
+                <label asp-for="HealthcareName" class="control-label"></label>
+                <select asp-for="HealthcareName" class = "form-control" asp-items="Html.GetEnumSelectList<HealthcareName>()">
+                    <option value="">[Unesite naziv]</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValidUntil" class="control-label"></label>
+                <input asp-for="ValidUntil" class ="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Remark" class="control-label"></label>
+                <input asp-for="Remark" class ="form-control"/>
+            </div>
             </div>
             </div>
             <br />

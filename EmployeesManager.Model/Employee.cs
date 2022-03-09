@@ -30,7 +30,10 @@ namespace EmployeesManager.Model
         public Address Address { get; set; }
 
         [Display(Name = "Kontakt")]
-        public Contact Contact { get; set; } 
+        public Contact Contact { get; set; }
+
+
+        public virtual ICollection<Healthcare> Healthcares { get; set; }
 
         //[ForeignKey("Section")]
         //public int SectionId { get; set; }

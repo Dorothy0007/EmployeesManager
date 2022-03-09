@@ -1,4 +1,5 @@
-﻿@using EmployeesManager.Web.Models
+﻿@using EmployeesManager.Model
+@using EmployeesManager.Web.Models
 @model EmployeeViewModel
 
 @{
@@ -20,6 +21,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#contact">Kontakt</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#healthcare">Praćenje zdravlja</a>
             </li>
         </ul>
         <hr />
@@ -99,6 +103,53 @@
                 <label asp-for="PrivateMobilePhone" class="control-label"></label>
                 <input asp-for="PrivateMobilePhone" class ="form-control" asp-items="ViewBag.ContactId"/>
             </div>
+            </div>
+            <div class="tab-pane fade" id="healthcare">
+                <div class="form-group">
+                <label asp-for="HealthcareName" class="control-label"></label>
+                <select asp-for="HealthcareName" class = "form-control" asp-items="Html.GetEnumSelectList<HealthcareName>()">
+                    <option value="">[Unesite naziv]</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValidUntil" class="control-label"></label>
+                <input asp-for="ValidUntil" class ="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Remark" class="control-label"></label>
+                <input asp-for="Remark" class ="form-control"/>
+            </div>
+            @*<table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Naziv
+                        </th>
+                        <th>
+                            Vrijedi do
+                        </th>
+                        <th>
+                            Remark
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model.Healthcares)
+                    {
+                    <tr>
+                        <td>
+                            <input asp-for="HealthcareName" class="form-control"/>
+                        </td>
+                        <td>
+                            <input asp-for="ValidUntil" class="form-control"/>
+                        </td>
+                        <td>
+                            <input asp-for="Remark" class="form-control"/>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>*@
             </div>
             </div>
             <br />
