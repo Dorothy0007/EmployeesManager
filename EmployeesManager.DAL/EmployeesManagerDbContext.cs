@@ -28,7 +28,7 @@ namespace EmployeesManager.DAL
         }
 
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<Employee> Addresses { get; set; }
-        public DbSet<Employee> Contacts { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
     }
 }

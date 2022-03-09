@@ -33,7 +33,7 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Employee employee)
         {
-           
+
             //employee.Contact.Employee = employee;
             //employee.Address.Employee = employee;
 
@@ -42,15 +42,22 @@ namespace EmployeesManager.Web.Controllers
             //TryValidateModel(employee.Contact);
             //TryValidateModel(employee.Address);
 
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            try
             {
-
                 _db.Employees.Add(employee);
                 _db.SaveChanges();
                 TempData["success"] = "Uspješno dodavanje novog zaposlenika!";
                 return RedirectToAction("Index");
             }
-            return View(employee);
+            catch (Exception ex)
+            {
+                return View(employee);
+            }
+                
+            //}
+            
         }
 
         // GET
@@ -77,12 +84,17 @@ namespace EmployeesManager.Web.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, Employee employee)
+        public IActionResult Edit(int? id, Employee employee)
         {
             if (id != employee.EmployeeId)
             {
                 return NotFound();
             }
+
+            var emp = _db.Employees
+                .Include(e => e.Address).Include(e => e.Contact).FirstOrDefault(m => m.EmployeeId == id);
+            
+            emp.Address.StreetNumber = employee.Address.StreetNumber;
 
             //employee.Contact.EmployeeId = employee.EmployeeId;
             //employee.Address.EmployeeId = employee.EmployeeId;
@@ -92,37 +104,39 @@ namespace EmployeesManager.Web.Controllers
 
             //if (ModelState.IsValid)
             //{
-            //    _db.Employees.Update(employee);
-            //    _db.SaveChanges();
-            //    TempData["success"] = "Uspješno ažuriranje zaposlenika!";
-            //    return RedirectToAction("Index");
+
+
+            _db.Employees.Update(emp);
+            _db.SaveChanges();
+            TempData["success"] = "Uspješno ažuriranje zaposlenika!";
+            return RedirectToAction("Index");
             //}
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _db.Update(employee);
-                    await _db.SaveChangesAsync();
-                    TempData["success"] = "Uspješno ažuriranje zaposlenika!";
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.EmployeeId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+            //        _db.Update(employee);
+            //        await _db.SaveChangesAsync();
+            //        TempData["success"] = "Uspješno ažuriranje zaposlenika!";
+            //    }
+            //    catch (DbUpdateConcurrencyException)
+            //    {
+            //        if (!EmployeeExists(employee.EmployeeId))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //}
+            //return RedirectToAction(nameof(Index));
+            //}
             //ViewData["EmployeeId"] = new SelectList(_db.Set<Address>(), "EmployeeId", "EmployeeId", employee.Address.EmployeeId);
             //ViewData["EmployeeId"] = new SelectList(_db.Set<Contact>(), "EmployeeId", "EmployeeId", employee.Contact.EmployeeId);
 
-            return View(employee);
+            return View(emp);
         }
 
         // GET
