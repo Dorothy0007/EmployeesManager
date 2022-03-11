@@ -117,11 +117,12 @@ namespace EmployeesManager.Web.Controllers
                 BusinessEmail = x.Contact.BusinessEmail,
                 BusinessMobilePhone = x.Contact.BusinessMobilePhone,
                 BusinessTelephone = x.Contact.BusinessTelephone,
-                Active = x.Active
+                Active = x.Active,
+                Healthcares = x.Healthcares
 
             }).FirstOrDefault();
 
-            
+            //_db.Entry(emp).Collection(x => x.Healthcares).Load();
 
             if (emp == null)
             {

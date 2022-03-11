@@ -105,7 +105,7 @@
             </div>
             </div>
             <div class="tab-pane fade" id="healthcare">
-                <div class="form-group">
+            @*    <div class="form-group">
                 <label asp-for="HealthcareName" class="control-label"></label>
                 <select asp-for="HealthcareName" class = "form-control" asp-items="Html.GetEnumSelectList<HealthcareName>()">
                     <option value="">[Unesite naziv]</option>
@@ -118,7 +118,7 @@
             <div class="form-group">
                 <label asp-for="Remark" class="control-label"></label>
                 <input asp-for="Remark" class ="form-control"/>
-            </div>
+            </div>*@
             @*<table class="table">
                 <thead>
                     <tr>
@@ -139,17 +139,70 @@
                     <tr>
                         <td>
                             <input asp-for="HealthcareName" class="form-control"/>
+                            @Html.DisplayFor(modelItem => item.HealthcareName)
                         </td>
                         <td>
                             <input asp-for="ValidUntil" class="form-control"/>
+                            @Html.DisplayFor(modelItem => item.HealthcareName)
                         </td>
                         <td>
                             <input asp-for="Remark" class="form-control"/>
+                            @Html.DisplayFor(modelItem => item.HealthcareName)
                         </td>
                     </tr>
                     }
                 </tbody>
             </table>*@
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<fieldset>
+    <legend>Dodavanje podataka o praćenju zdravlja</legend>
+    <table id="addItemTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <td>Naziv</td>
+                <td>Vrijedi do</td>
+                <td>Napomena</td>
+                <td></td>
+            </tr>
+        </thead>
+
+        <tr id="tablerow0">
+            <td>
+                <div class="editor-field">
+                    <select name="HealthcareName[0]" class = "form-control" asp-items="Html.GetEnumSelectList<HealthcareName>()">
+                        <option value="">[Unesite naziv]</option>
+                    </select>
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    <input type="date" name="ValidUntil[0]" class="form-control"/>
+                </div>
+            </td>
+            <td>
+                <div class="editor-field">
+                    <input class="text-box single-line form-control" name="Remark[0]" type="text" value="" />
+                </div>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger mx-2" onclick="removeTr(0);"><i class="bi bi-trash3-fill"></i> &nbsp Obriši zapis</button>
+            </td>
+        </tr>
+
+    </table>
+    <p>
+        <button id="add" type="button" class="btn btn-primary">Dodaj zapis</button>
+    </p>
+    <hr />
+</fieldset>
+}
+    
             </div>
             </div>
             <br />
@@ -166,4 +219,35 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        var counter = 1;
+        $(function () {
+
+            $('#add').click(function () {
+                $('<tr id="tablerow' + counter + '"><td>' +
+                    '<select name="HealthcareName[' + counter + ']" class = "form-control" asp-items="Html.GetEnumSelectList<HealthcareName>()"><option value="">[Unesite naziv]</option></select>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div><input type="date" class="text-box single-line form-control" name="ValidUntil[' + counter + ']"/></div>' + 
+                    '</td>' +
+                    '<td>' +
+                    '<input type="text" class="text-box single-line form-control" name="Remark[' + counter + ']" value="" required="required" />' +
+                    '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Obriši zapis</button>' +
+                    '</td>' +
+                    '</tr>').appendTo('#addItemTable');
+                counter++;
+                return false;
+            });
+        });
+        function removeTr(index) {
+            if (counter > 1) {
+                $('#tablerow' + index).remove();
+                counter--;
+            }
+            return false;
+        }
+    </script>
 }

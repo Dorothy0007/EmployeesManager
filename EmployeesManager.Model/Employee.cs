@@ -33,7 +33,7 @@ namespace EmployeesManager.Model
         public Contact Contact { get; set; }
 
 
-        public virtual ICollection<Healthcare> Healthcares { get; set; }
+        public ICollection<Healthcare> Healthcares { get; set; }
 
         //[ForeignKey("Section")]
         //public int SectionId { get; set; }

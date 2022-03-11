@@ -58,6 +58,6 @@ namespace EmployeesManager.Web.Models
         [Display(Name = "Napomena")]
         public string Remark { get; set; }
 
-        //public virtual ICollection<Healthcare> Healthcares { get; set; }
+        public ICollection<Healthcare> Healthcares { get; set; }
     }
 }
