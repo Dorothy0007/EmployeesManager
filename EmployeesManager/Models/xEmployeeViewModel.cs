@@ -50,14 +50,5 @@ namespace EmployeesManager.Web.Models
         [Display(Name = "Privatni broj mobitela")]
         public string PrivateMobilePhone { get; set; }
 
-        [Display(Name = "Naziv")]
-        public HealthcareName HealthcareName { get; set; }
-        [DataType(DataType.Date)]
-        [Display(Name = "Vrijedo do:")]
-        public DateTime ValidUntil { get; set; }
-        [Display(Name = "Napomena")]
-        public string Remark { get; set; }
-
-        public ICollection<Healthcare> Healthcares { get; set; }
     }
 }

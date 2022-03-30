@@ -6,44 +6,105 @@
 }
 
 <form method="post" asp-action="Delete">
-    <input asp-for="EmployeeId" hidden />
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Brisanje zaposlenika</h2>
+            <h2 class="text-primary">Ažuriranje podataka o zaposleniku</h2>
             <hr />
         </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#home">Osnovni podaci</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#address">Adresa</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#contact">Kontakt</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#healthcare">Praćenje zdravlja</a>
+            </li>
+        </ul>
+        <hr />
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane active show" id="home">
+        <input asp-for="EmployeeId" hidden />
         <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" disabled class="form-control" />
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
         <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" disabled class="form-control" />
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
         <div class="form-group">
                 <label asp-for="OIB" class="control-label"></label>
-                <input asp-for="OIB" disabled class="form-control" />
+                <input asp-for="OIB" class="form-control" />
+                <span asp-validation-for="OIB" class="text-danger"></span>
         </div>
         <div class="form-group">
                 <label asp-for="MBO" class="control-label"></label>
-                <input asp-for="MBO" disabled class="form-control" />
+                <input asp-for="MBO" class="form-control" />
+                <span asp-validation-for="MBO" class="text-danger"></span>
         </div>
         <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" disabled asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
                 </label>
         </div>
         <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" disabled class="form-control" />
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="AddressId" class="control-label"></label>
-                <select asp-for="AddressId" disabled class ="form-control" asp-items="ViewBag.AddressId"></select>
+            </div>
+            <div class="tab-pane fade" id="address">
+            <div class="form-group">
+                <label asp-for="Street" class="control-label"></label>
+                <input asp-for="Street" class ="form-control"/>
             </div>
             <div class="form-group">
-                <label asp-for="ContactId" disabled class="control-label"></label>
-            </div>*@
+                <label asp-for="StreetNumber" class="control-label"></label>
+                <input asp-for="StreetNumber" class ="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostalCode" class="control-label"></label>
+                <input asp-for="PostalCode" class ="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class ="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <input asp-for="Country" class ="form-control"/>
+            </div>
+            </div>
+            <div class="tab-pane fade" id="contact">
+                   <div class="form-group">
+                <label asp-for="BusinessEmail" class="control-label"></label>
+                <input asp-for="BusinessEmail" class ="form-control"/>
+            </div>
+             <div class="form-group">
+                <label asp-for="BusinessMobilePhone" class="control-label"></label>
+                <input asp-for="BusinessMobilePhone" class ="form-control"/>
+            </div>
+             <div class="form-group">
+                <label asp-for="BusinessTelephone" class="control-label"></label>
+                <input asp-for="BusinessTelephone" class ="form-control"/>
+            </div>
+             <div class="form-group">
+                <label asp-for="PrivateEmail" class="control-label"></label>
+                <input asp-for="PrivateEmail" class ="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrivateMobilePhone" class="control-label"></label>
+                <input asp-for="PrivateMobilePhone" class ="form-control"/>
+            </div>
+            </div>
+            </div>
             <br />
          <div class="row pt-4">
              <div class="col-6">

@@ -1,12 +1,12 @@
 ﻿@using EmployeesManager.Model
 @using EmployeesManager.Web.Models
-@model EmployeeViewModel
+@model Employee
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<form method="post" asp-action="CreateOrEdit">
+<form method="post" asp-action="Create">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">Unos novog zaposlenika</h2>
@@ -105,59 +105,11 @@
             </div>
             </div>
             <div class="tab-pane fade" id="healthcare">
-            @*    <div class="form-group">
-                <label asp-for="HealthcareName" class="control-label"></label>
-                <select asp-for="HealthcareName" class = "form-control" asp-items="Html.GetEnumSelectList<HealthcareName>()">
-                    <option value="">[Unesite naziv]</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ValidUntil" class="control-label"></label>
-                <input asp-for="ValidUntil" class ="form-control"/>
-            </div>
-            <div class="form-group">
-                <label asp-for="Remark" class="control-label"></label>
-                <input asp-for="Remark" class ="form-control"/>
-            </div>*@
-            @*<table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Naziv
-                        </th>
-                        <th>
-                            Vrijedi do
-                        </th>
-                        <th>
-                            Remark
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(var item in Model.Healthcares)
-                    {
-                    <tr>
-                        <td>
-                            <input asp-for="HealthcareName" class="form-control"/>
-                            @Html.DisplayFor(modelItem => item.HealthcareName)
-                        </td>
-                        <td>
-                            <input asp-for="ValidUntil" class="form-control"/>
-                            @Html.DisplayFor(modelItem => item.HealthcareName)
-                        </td>
-                        <td>
-                            <input asp-for="Remark" class="form-control"/>
-                            @Html.DisplayFor(modelItem => item.HealthcareName)
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>*@
-
-@using (Html.BeginForm())
+            
+@*@using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-
+*@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <fieldset>
@@ -201,7 +153,7 @@
     </p>
     <hr />
 </fieldset>
-}
+@*}*@
     
             </div>
             </div>
@@ -235,7 +187,7 @@
                     '<input type="text" class="text-box single-line form-control" name="Remark[' + counter + ']" value="" required="required" />' +
                     '</td>' +
                     '<td>' +
-                    '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Obriši zapis</button>' +
+                    '<button type="button" class="btn btn-danger mx-2" onclick="removeTr(' + counter + ');"><i class="bi bi-trash3-fill"></i> &nbsp Obriši zapis</button>' +
                     '</td>' +
                     '</tr>').appendTo('#addItemTable');
                 counter++;

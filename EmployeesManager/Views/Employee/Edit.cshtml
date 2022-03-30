@@ -1,12 +1,12 @@
 ﻿@using EmployeesManager.Model
 @using EmployeesManager.Web.Models
-@model EmployeeViewModel
+@model Employee
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<form method="post" asp-action="CreateOrEdit">
+<form method="post" asp-action="Edit">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">Ažuriranje podataka o zaposleniku</h2>
@@ -82,9 +82,7 @@
                 <label asp-for="Country" class="control-label"></label>
                 <input asp-for="Country" class ="form-control"/>
             </div>
-            @*<input asp-for="Address.Employee" hidden/>
-            <input asp-for="Address.EmployeeId" hidden/>*@
-           </div>
+            </div>
             <div class="tab-pane fade" id="contact">
                    <div class="form-group">
                 <label asp-for="BusinessEmail" class="control-label"></label>
@@ -109,7 +107,7 @@
             @*<input asp-for="Employee" hidden/>
             <input asp-for="EmployeeId" hidden/>*@
             </div>
-            <div class="tab-pane fade" id="healthcare">
+            @*<div class="tab-pane fade" id="healthcare">
                 <div class="form-group">
                 <label asp-for="HealthcareName" class="control-label"></label>
                 <select asp-for="HealthcareName" class = "form-control" asp-items="Html.GetEnumSelectList<HealthcareName>()">
@@ -124,7 +122,7 @@
                 <label asp-for="Remark" class="control-label"></label>
                 <input asp-for="Remark" class ="form-control"/>
             </div>
-            </div>
+            </div>*@
             </div>
             <br />
          <div class="row pt-4">

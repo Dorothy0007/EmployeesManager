@@ -9,6 +9,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<EmployeesManagerDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("EmployeesManager")));
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddTransient<IEmployeesRepository, EmployeeRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

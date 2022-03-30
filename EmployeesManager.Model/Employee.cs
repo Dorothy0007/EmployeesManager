@@ -25,21 +25,30 @@ namespace EmployeesManager.Model
         [Display(Name = "Datum rođenja")]
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
+        public string Street { get; set; }
+        public string StreetNumber { get; set; }
+        public int PostalCode { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
 
-        [Display(Name = "Adresa")]
-        public Address Address { get; set; }
+        [Required]
+        [Display(Name = "Privatna adresa e-pošte")]
+        [EmailAddress(ErrorMessage = "Neispravan format adrese e-pošte.")]
+        public string PrivateEmail { get; set; }
 
-        [Display(Name = "Kontakt")]
-        public Contact Contact { get; set; }
+        [Required]
+        [Display(Name = "Poslovna adresa e-pošte")]
+        [EmailAddress(ErrorMessage = "Neispravan format adrese e-pošte.")]
+        public string BusinessEmail { get; set; }
 
+        [Display(Name = "Broj fiksne poslovne linije")]
+        public string BusinessTelephone { get; set; }
 
-        public ICollection<Healthcare> Healthcares { get; set; }
+        [Display(Name = "Poslovni broj mobitela")]
+        public string BusinessMobilePhone { get; set; }
 
-        //[ForeignKey("Section")]
-        //public int SectionId { get; set; }
-        //public virtual Section Section { get; set; }
-
-        //public virtual ICollection<EmployeeStay> EmployeeStays { get; set; }
+        [Display(Name = "Privatni broj mobitela")]
+        public string PrivateMobilePhone { get; set; }
 
     }
 }
