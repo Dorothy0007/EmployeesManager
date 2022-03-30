@@ -1,6 +1,5 @@
 ﻿using EmployeesManager.DAL;
 using EmployeesManager.Model;
-using EmployeesManager.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;

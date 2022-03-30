@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeesManager.Web", "EmployeesManager\EmployeesManager.Web.csproj", "{01CDDF6F-E99E-423D-AC67-9473345A122E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeesManager.Web", "EmployeesManager\EmployeesManager.Web.csproj", "{01CDDF6F-E99E-423D-AC67-9473345A122E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeesManager.Model", "EmployeesManager.Model\EmployeesManager.Model.csproj", "{72D8C6DA-EDF6-4989-865A-6E344234034C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeesManager.Model", "EmployeesManager.Model\EmployeesManager.Model.csproj", "{72D8C6DA-EDF6-4989-865A-6E344234034C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeesManager.DAL", "EmployeesManager.DAL\EmployeesManager.DAL.csproj", "{F7454A59-8FD2-4FB4-B46C-310941654155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeesManager.DAL", "EmployeesManager.DAL\EmployeesManager.DAL.csproj", "{F7454A59-8FD2-4FB4-B46C-310941654155}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
