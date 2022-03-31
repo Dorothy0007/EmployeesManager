@@ -3,6 +3,7 @@ using EmployeesManager.DAL.Interfaces;
 using EmployeesManager.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EmployeesManager.Web.Controllers
 {
@@ -102,7 +103,7 @@ namespace EmployeesManager.Web.Controllers
 
             _context.Remove(education);
             _context.Save();
-            TempData["success"] = "Uspješno brisanje zaposlenika!";
+            TempData["success"] = "Uspješno brisanje edukacije!";
             return RedirectToAction("Index");
         }
     }

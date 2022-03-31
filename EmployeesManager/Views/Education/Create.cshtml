@@ -60,7 +60,13 @@
                     <input class="form-check-input" asp-for="Mandatory" /> @Html.DisplayNameFor(model => model.Mandatory)
                 </label>
         </div>
-            <br />
+
+        <div class="form-group">
+                <label  class="control-label"></label>
+                <select class="form-control" asp-items="ViewBag.EmployeeId" name="EmployeeIdList"  multiple></select>
+            </div>
+
+         <br />
          <div class="row pt-4">
              <div class="col-6">
                  <button type="submit" class="btn btn-primary">Kreiraj</button>

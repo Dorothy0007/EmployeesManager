@@ -10,16 +10,35 @@ namespace EmployeesManager.Model
     public class Education
     {
         public int EducationId { get; set; }
+
+        [Display(Name = "Naziv edukacije")]
         public string EducationName { get; set; }
+       
+        [Display(Name = "Vrsta edukacije")]
         public EducationCategory EducationCategory { get; set; }
+        
+        [Display(Name = "Tip edukacije")]
         public EducationType EducationType { get; set; }
+        
+        [Display(Name = "Tip sudjelovanja")]
         public ParticipationType ParticipationType { get; set; }
+       
+        [Display(Name = "Datum početka")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy.}", ApplyFormatInEditMode = true)]
         public DateTime BeginDate { get; set; }
+        
+        [Display(Name = "Datum završetka")]
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
+        
+        [Display(Name = "Opis")]
         public string Description { get; set; }
+        
+        [Display(Name = "Napomena")]
         public string Remark { get; set; }
+        
+        [Display(Name = "Obavezno")]
         public bool Mandatory { get; set; }
 
         public ICollection<Employee>? Employees { get; set; }
