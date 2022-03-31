@@ -1,5 +1,6 @@
 ﻿using EmployeesManager.DAL;
 using EmployeesManager.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using System.Linq;
 
 namespace EmployeesManager.Web.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
 
@@ -25,8 +27,6 @@ namespace EmployeesManager.Web.Controllers
 
         public IActionResult Index()
         {
-            //IEnumerable<Employee> employeeList = _db.Employees;
-            //return View(employeeList);
             return View(_context.GetAll().ToList());
         }
 
@@ -43,9 +43,6 @@ namespace EmployeesManager.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                //_db.Employees.Add(GetEmployee(new Employee(), emp));
-                //_db.SaveChanges();
                 _context.Add(employee);
                 _context.Save();
                 TempData["success"] = "Uspješno dodavanje novog zaposlenika!";

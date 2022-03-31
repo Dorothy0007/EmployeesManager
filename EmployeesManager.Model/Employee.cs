@@ -50,5 +50,7 @@ namespace EmployeesManager.Model
         [Display(Name = "Privatni broj mobitela")]
         public string PrivateMobilePhone { get; set; }
 
+        public ICollection<Education> Educations { get; set; }
+
     }
 }

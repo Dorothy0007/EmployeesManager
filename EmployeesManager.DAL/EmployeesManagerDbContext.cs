@@ -16,6 +16,8 @@ namespace EmployeesManager.DAL
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Employee>().HasMany(e => e.Educations).WithMany(e => e.Employees).UsingEntity(j => j.ToTable("EmployeeEducation"));
+
             //modelBuilder.Entity<Employee>().HasOne(c => c.Contact).WithOne(e => e.Employee).HasForeignKey<Contact>(e => e.EmployeeId);
 
             //modelBuilder.Entity<Healthcare>().HasOne(h => h.Employee).WithMany(e => e.Healthcares);
@@ -23,5 +25,6 @@ namespace EmployeesManager.DAL
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Healthcare> Healthcares { get; set; }
+        public DbSet<Education> Educations { get; set; }
     }
 }
