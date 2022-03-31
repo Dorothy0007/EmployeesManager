@@ -1,6 +1,8 @@
 using EmployeesManager.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using EmployeesManager.DAL.Interfaces;
+using EmployeesManager.DAL.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,7 @@ builder.Services.AddDbContext<EmployeesManagerDbContext>(options => options.UseS
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<IEmployeesRepository, EmployeeRepository>();
+builder.Services.AddTransient<IEducationsRepository, EducationRepository>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

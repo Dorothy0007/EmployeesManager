@@ -14,13 +14,15 @@ namespace EmployeesManager.Model
         public EducationCategory EducationCategory { get; set; }
         public EducationType EducationType { get; set; }
         public ParticipationType ParticipationType { get; set; }
+        [DataType(DataType.Date)]
         public DateTime BeginDate { get; set; }
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
         public string Remark { get; set; }
         public bool Mandatory { get; set; }
 
-        public ICollection<Employee> Employees { get; set; }
+        public ICollection<Employee>? Employees { get; set; }
     }
 
     public enum EducationType

@@ -1,0 +1,73 @@
+﻿@using EmployeesManager.Model
+@model Education
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<form method="post" asp-action="Create">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Unos nove edukacije</h2>
+            <hr />
+        </div>
+        <div>
+        <div class="form-group">
+                <label asp-for="EducationName" class="control-label"></label>
+                <input asp-for="EducationName" class="form-control" />
+                <span asp-validation-for="EducationName" class="text-danger"></span>
+        </div>
+        <div class="editor-field">
+            <label asp-for="EducationCategory" class="control-label"></label>
+                    <select name="EducationCategory" class = "form-control" asp-items="Html.GetEnumSelectList<EducationCategory>()">
+                        <option value="">[Unesite vrstu edukacije]</option>
+                    </select>
+        </div>
+        <div class="editor-field">
+            <label asp-for="EducationType" class="control-label"></label>
+                    <select name="EducationType" class = "form-control" asp-items="Html.GetEnumSelectList<EducationType>()">
+                        <option value="">[Unesite tip edukacije]</option>
+                    </select>
+        </div>
+        <div class="editor-field">
+            <label asp-for="ParticipationType" class="control-label"></label>
+                    <select name="ParticipationType" class = "form-control" asp-items="Html.GetEnumSelectList<ParticipationType>()">
+                        <option value="">[Unesite tip sudjelovanja]</option>
+                    </select>
+        </div>
+        <div class="form-group">
+                <label asp-for="BeginDate" class="control-label"></label>
+                <input asp-for="BeginDate" class="form-control" />
+                <span asp-validation-for="BeginDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+                <label asp-for="Remark" class="control-label"></label>
+                <input asp-for="Remark" class="form-control" />
+                <span asp-validation-for="Remark" class="text-danger"></span>
+        </div>
+        <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Mandatory" /> @Html.DisplayNameFor(model => model.Mandatory)
+                </label>
+        </div>
+            <br />
+         <div class="row pt-4">
+             <div class="col-6">
+                 <button type="submit" class="btn btn-primary">Kreiraj</button>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Education" asp-action="Index" class="btn btn-secondary">Natrag na popis edukacija</a>
+            </div>
+         </div>
+    </div>
+</form>
