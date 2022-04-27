@@ -19,6 +19,9 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<IEmployeesRepository, EmployeeRepository>();
 builder.Services.AddTransient<IEducationsRepository, EducationRepository>();
+builder.Services.AddTransient<IClinicRepository, ClinicRepository>();
+builder.Services.AddTransient<IInstituteRepository, InstituteRepository>();
+
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

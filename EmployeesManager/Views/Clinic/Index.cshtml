@@ -1,0 +1,64 @@
+﻿@using EmployeesManager.Model
+@model IEnumerable<Clinic>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<partial name="_Notification" />
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Popis klinika</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Clinic" asp-action="Create" class="btn btn-primary"><i class="bi bi-eyeglasses"></i> &nbsp; Nova klinika</a>
+        </div>
+    </div>
+    <br /><br />
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.Label("Šifra klinike")
+            </th>
+            <th>
+                @Html.Label("Naziv klinike")
+            </th>
+            <th>
+                @Html.Label("Predstojnik")
+            </th>
+            <th>
+                @Html.Label("Lokacija")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameShort)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameLong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HeadClinic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            
+            <td>
+                <div class="btn-group" role="group">
+                    <a asp-controller="Clinic" asp-action="Edit" asp-route-id="@item.ClinicId" class="btn btn-primary mx-2"><i class="bi bi-pen-fill"></i> &nbsp Uredi</a>
+                     <a asp-controller="Clinic" asp-action="Delete" asp-route-id="@item.ClinicId" class="btn btn-danger mx-2"><i class="bi bi-trash3-fill"></i> &nbsp Obriši</a> 
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

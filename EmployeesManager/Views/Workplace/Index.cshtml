@@ -1,0 +1,58 @@
+﻿@using EmployeesManager.Model
+@model IEnumerable<Workplace>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<partial name="_Notification" />
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Popis radilišta</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Workplace" asp-action="Create" class="btn btn-primary"><i class="bi bi-eyeglasses"></i> &nbsp; Novo radilište</a>
+        </div>
+    </div>
+    <br /><br />
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.Label("Šifra radilišta")
+            </th>
+            <th>
+                @Html.Label("Naziv radilišta")
+            </th>
+            <th>
+                @Html.Label("Mjesto troška")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameShort)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameLong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpenseCode)
+            </td>
+            
+            <td>
+                <div class="btn-group" role="group">
+                    <a asp-controller="Workplace" asp-action="Edit" asp-route-id="@item.WorkplaceId" class="btn btn-primary mx-2"><i class="bi bi-pen-fill"></i> &nbsp Uredi</a>
+                     <a asp-controller="Workplace" asp-action="Delete" asp-route-id="@item.WorkplaceId" class="btn btn-danger mx-2"><i class="bi bi-trash3-fill"></i> &nbsp Obriši</a> 
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

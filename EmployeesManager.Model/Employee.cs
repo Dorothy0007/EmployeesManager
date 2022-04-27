@@ -51,6 +51,5 @@ namespace EmployeesManager.Model
         public string PrivateMobilePhone { get; set; }
 
         public ICollection<Education> Educations { get; set; }
-
     }
 }

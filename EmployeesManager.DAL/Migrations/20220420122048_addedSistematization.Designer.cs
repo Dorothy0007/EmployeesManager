@@ -4,6 +4,7 @@ using EmployeesManager.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeesManager.DAL.Migrations
 {
     [DbContext(typeof(EmployeesManagerDbContext))]
-    partial class EmployeesManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220420122048_addedSistematization")]
+    partial class addedSistematization
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,8 @@ namespace EmployeesManager.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClinicId"), 1L, 1);
 
-                    b.Property<string>("HeadClinic")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("HeadClinicId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Location")
                         .HasColumnType("int");
@@ -262,9 +263,8 @@ namespace EmployeesManager.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HeadInstitute")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("HeadInstituteId")
+                        .HasColumnType("int");
 
                     b.Property<string>("NameLong")
                         .IsRequired()
@@ -553,7 +553,7 @@ namespace EmployeesManager.DAL.Migrations
             modelBuilder.Entity("EmployeesManager.Model.Institute", b =>
                 {
                     b.HasOne("EmployeesManager.Model.Clinic", "Clinic")
-                        .WithMany()
+                        .WithMany("Institutes")
                         .HasForeignKey("ClinicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -621,6 +621,11 @@ namespace EmployeesManager.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EmployeesManager.Model.Clinic", b =>
+                {
+                    b.Navigation("Institutes");
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Department", b =>
