@@ -3,9 +3,11 @@
 
 @{
     ViewData["Title"] = "Create";
+    var name = String.Join(",",ViewBag.HealthcareName);
+
 }
 
-<form method="post" asp-action="Create">
+@*<form method="post" asp-action="Create">*@
     <div class="border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">Unos novog zaposlenika</h2>
@@ -118,71 +120,78 @@
                 <td></td>
             </tr>
         </thead>
-
+        <tbody id="dataTable">
         <tr id="tablerow0">
             <td>
-                <div class="editor-field">
-                    <select name="HealthcareName[0]" class = "form-control" asp-items="Html.GetEnumSelectList<HealthcareName>()">
-                        <option value="">[Unesite naziv]</option>
-                    </select>
-                </div>
+                <select name="HealthcareName"  class = "form-control editor-field" id="HealthcareName">
+                             <option value="">[Unesite naziv]</option>
+                            @foreach(var n in ViewBag.HealthcareName)
+                            {
+                                 <option value="@n">@n</option>
+                            }
+                           
+                        </select>
             </td>
             <td>
-                <div class="editor-field">
-                    <input type="date" name="ValidUntil[0]" class="form-control"/>
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    <input class="text-box single-line form-control" name="Remark[0]" type="text" value="" />
-                </div>
-            </td>
-            <td>
-                <button type="button" class="btn btn-danger mx-2" onclick="removeTr(0);"><i class="bi bi-trash3-fill"></i> &nbsp Obriši zapis</button>
-            </td>
-        </tr>
+                        <input type="date" name="ValidUntil" id="ValidUntil" value=""  class="form-control editor-field"/>
+                </td>
+                <td>
+                        <input class="text-box single-line form-control editor-field" id="Remark" value="" name="Remark" type="text"  />
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger mx-2" value="button" onclick="removeTr(0);"><i class="bi bi-trash3-fill"></i> &nbsp Obriši zapis</button>
+                </td>
+            </tr>
+        </tbody>
 
     </table>
     <p>
-        <button id="add" type="button" class="btn btn-primary">Dodaj zapis</button>
+        <button id="add" type="button" class="btn btn-primary" >Dodaj zapis</button>
     </p>
     <hr />
-</fieldset>
-@*}*@
+    </fieldset>
     
             </div>
             </div>
             <br />
          <div class="row pt-4">
              <div class="col-6">
-                 <button type="submit" class="btn btn-primary">Kreiraj</button>
+                 <button type="submit" class="btn btn-primary" onclick="FormSubmit()">Kreiraj</button>
             </div>
             <div class="col-6 text-end">
                 <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">Natrag na popis zaposlenika</a>
             </div>
          </div>
     </div>
-</form>
+@*</form>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script type="text/javascript">
+        var healthename='@name';
+        healthename=healthename.split(',')
+         var html='<option value="">[Unesite naziv]</option>';
+         for (i = 0; i < healthename.length; i++) {
+             console.log(healthename[i]);
+             html+='<option value="'+healthename[i]+'">'+healthename[i]+'</option>'
+         }
         var counter = 1;
+       
         $(function () {
 
             $('#add').click(function () {
                 $('<tr id="tablerow' + counter + '"><td>' +
-                    '<select name="HealthcareName[' + counter + ']" class = "form-control" asp-items="Html.GetEnumSelectList<HealthcareName>()"><option value="">[Unesite naziv]</option></select>' +
+                    '<select name="HealthcareName[' + counter + ']" value="" class = "form-control">  '+html+' </select>' +
                     '</td>' +
                     '<td>' +
-                    '<div><input type="date" class="text-box single-line form-control" name="ValidUntil[' + counter + ']"/></div>' + 
+                    '<input type="date" name="ValidUntil" id="ValidUntil" value=""  class="form-control editor-field"/>' + 
                     '</td>' +
                     '<td>' +
-                    '<input type="text" class="text-box single-line form-control" name="Remark[' + counter + ']" value="" required="required" />' +
+                    '<input type="text" class="text-box single-line form-control" value="" name="Remark[' + counter + ']" value="" required="required" />' +
                     '</td>' +
                     '<td>' +
-                    '<button type="button" class="btn btn-danger mx-2" onclick="removeTr(' + counter + ');"><i class="bi bi-trash3-fill"></i> &nbsp Obriši zapis</button>' +
+                    '<button type="button" class="btn btn-danger mx-2" value="button" onclick="removeTr(' + counter + ');"><i class="bi bi-trash3-fill"></i> &nbsp Obriši zapis</button>' +
                     '</td>' +
                     '</tr>').appendTo('#addItemTable');
                 counter++;
@@ -190,11 +199,102 @@
             });
         });
         function removeTr(index) {
-            if (counter > 1) {
-                $('#tablerow' + index).remove();
-                counter--;
-            }
+             $('#tablerow' + index).remove();
+            //if (counter > 1) {
+            //    $('#tablerow' + index).remove();
+            //    counter--;
+            //}
             return false;
+        }
+
+          function FormSubmit() {
+            //Set the URL.
+            //var url = $("#myForm").attr("action");
+            //Add the Field values to FormData object.
+            if ($("#txtTestTitle").val() == "") {
+                alert("Test Title must be filled out");
+                return false;
+            }
+            var category = $('#txtCategory option:selected').val();
+            if (category === "API") {
+                    if ($("#txtUrl").val() == "") {
+                    alert("API Url must be filled out");
+                    return false;
+                }
+            }
+
+
+
+
+            var formData = new FormData();
+            formData.append("FirstName", $("#FirstName").val());
+            formData.append("LastName", $("#LastName").val());
+            formData.append("OIB", $("#OIB").val());
+            formData.append("MBO", $("#MBO").val());
+            formData.append("BirthDate", $("#BirthDate").val());
+            formData.append("Active", $("#Active").val());
+            formData.append("Street", $("#Street").val());
+            formData.append("StreetNumber", $("#StreetNumber").val());
+            formData.append("PostalCode", $("#PostalCode").val());
+            formData.append("City", $("#City").val());
+            formData.append("Country", $("#Country").val());
+            formData.append("PrivateEmail", $("#PrivateEmail").val());
+            formData.append("BusinessEmail", $("#BusinessEmail").val());
+            formData.append("BusinessTelephone", $("#BusinessTelephone").val());
+            formData.append("BusinessMobilePhone", $("#BusinessMobilePhone").val());
+            formData.append("PrivateMobilePhone", $("#PrivateMobilePhone").val());
+            //for (let [key, value] of formData) {
+            //  console.log(`${key}: ${value}`)
+            //}
+            var HealthcareName;
+            var ValidUntil;
+            var Remark;
+            var tableRows = document.getElementById("dataTable").rows;
+            for (i = 0; i < tableRows.length; i++) {
+                var myrow = tableRows[i];
+                //console.log(myrow);
+                HealthcareName = "";
+                ValidUntil = "";
+                Remark = "";
+                let Row = [];
+                for (j = 0; j < myrow.cells.length; j++) {
+                    var mytd = myrow.cells[j];
+                     //console.log(mytd);
+                     //console.log(mytd.children[0].value);
+                    if (mytd.children[0].value === "") {
+                             alert("All input must be filled out");
+                              return false;
+                        }
+                    if (j == 0) {                        
+                        HealthcareName = mytd.children[0].value;
+                    }
+                    else if (j == 1) {
+                        ValidUntil = mytd.children[0].value;
+                    }
+                    else if (j == 2) {
+                        Remark = mytd.children[0].value;
+                    }
+                    //console.log(mytd.children[0].value);
+                }
+                Row.push([HealthcareName,ValidUntil,Remark]);
+                formData.append("Step", Row);
+                console.log(Row);
+            }
+             console.log(formData);
+            $.ajax({
+                type: 'POST',
+                 url: "/Employee/CreateEmployee",
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (response) {
+                console.log(response);
+                if (response == true) {
+                   
+                    location.href = "/Employee/Index";
+                    //$("#lblMessage").html(response.Message);
+                }
+            });
         }
     </script>
 }

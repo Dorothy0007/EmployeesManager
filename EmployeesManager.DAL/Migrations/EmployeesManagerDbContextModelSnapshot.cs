@@ -62,7 +62,7 @@ namespace EmployeesManager.DAL.Migrations
 
                     b.HasKey("ClinicId");
 
-                    b.ToTable("Clinics");
+                    b.ToTable("Clinics", (string)null);
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Department", b =>
@@ -99,7 +99,7 @@ namespace EmployeesManager.DAL.Migrations
 
                     b.HasIndex("InstituteId");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Education", b =>
@@ -117,15 +117,17 @@ namespace EmployeesManager.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EducationCategory")
-                        .HasColumnType("int");
+                    b.Property<string>("EducationCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EducationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EducationType")
-                        .HasColumnType("int");
+                    b.Property<string>("EducationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -133,8 +135,9 @@ namespace EmployeesManager.DAL.Migrations
                     b.Property<bool>("Mandatory")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ParticipationType")
-                        .HasColumnType("int");
+                    b.Property<string>("ParticipationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Remark")
                         .IsRequired()
@@ -142,7 +145,7 @@ namespace EmployeesManager.DAL.Migrations
 
                     b.HasKey("EducationId");
 
-                    b.ToTable("Educations");
+                    b.ToTable("Educations", (string)null);
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Employee", b =>
@@ -216,7 +219,7 @@ namespace EmployeesManager.DAL.Migrations
 
                     b.HasKey("EmployeeId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Healthcare", b =>
@@ -227,11 +230,12 @@ namespace EmployeesManager.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HealthcareId"), 1L, 1);
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HealthcareName")
-                        .HasColumnType("int");
+                    b.Property<string>("HealthcareName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Remark")
                         .IsRequired()
@@ -244,7 +248,7 @@ namespace EmployeesManager.DAL.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Healthcares");
+                    b.ToTable("Healthcares", (string)null);
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Institute", b =>
@@ -278,7 +282,7 @@ namespace EmployeesManager.DAL.Migrations
 
                     b.HasIndex("ClinicId");
 
-                    b.ToTable("Institutes");
+                    b.ToTable("Institutes", (string)null);
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Workplace", b =>
@@ -308,7 +312,7 @@ namespace EmployeesManager.DAL.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Workplaces");
+                    b.ToTable("Workplaces", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -542,10 +546,8 @@ namespace EmployeesManager.DAL.Migrations
             modelBuilder.Entity("EmployeesManager.Model.Healthcare", b =>
                 {
                     b.HasOne("EmployeesManager.Model.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Healthcares")
+                        .HasForeignKey("EmployeeId");
 
                     b.Navigation("Employee");
                 });
@@ -553,7 +555,7 @@ namespace EmployeesManager.DAL.Migrations
             modelBuilder.Entity("EmployeesManager.Model.Institute", b =>
                 {
                     b.HasOne("EmployeesManager.Model.Clinic", "Clinic")
-                        .WithMany()
+                        .WithMany("Institutes")
                         .HasForeignKey("ClinicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -623,9 +625,19 @@ namespace EmployeesManager.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("EmployeesManager.Model.Clinic", b =>
+                {
+                    b.Navigation("Institutes");
+                });
+
             modelBuilder.Entity("EmployeesManager.Model.Department", b =>
                 {
                     b.Navigation("Workplaces");
+                });
+
+            modelBuilder.Entity("EmployeesManager.Model.Employee", b =>
+                {
+                    b.Navigation("Healthcares");
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Institute", b =>

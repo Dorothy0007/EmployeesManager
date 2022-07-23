@@ -10,9 +10,11 @@ namespace EmployeesManager.Web.Controllers
     public class EducationController : Controller
     {
         private readonly IEducationsRepository _context;
-        public EducationController(IEducationsRepository context)
+        private readonly IEmployeesRepository _contextEmployee;
+        public EducationController(IEducationsRepository context, IEmployeesRepository contextEmployee)
         {
             _context = context;
+            _contextEmployee = contextEmployee;
         }
 
         // GET: EducationController
@@ -30,28 +32,71 @@ namespace EmployeesManager.Web.Controllers
         // GET: EducationController/Create
         public ActionResult Create()
         {
+            ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
+            ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
+            ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
+            ViewBag.Employee = _contextEmployee.GetAll();
             return View();
         }
 
         // POST: EducationController/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(Education education, string[] Employees)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        foreach (var n in Employees)
+        //        {
+        //            var employee = _contextEmployee.GetById(Convert.ToInt32(n));
+        //            education.Employees.Add(employee);
+        //        }
+        //        _context.Add(education);
+        //        _context.Save();
+        //        TempData["success"] = "Uspješno dodavanje nove edukacije!";
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewBag.Employee = _contextEmployee.GetAll();
+        //    ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
+        //    ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
+        //    ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
+
+        //    return View(education);
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Education education)
+        public ActionResult Create(Education education, string[] Employees)
         {
             if (ModelState.IsValid)
             {
+                foreach (var n in Employees)
+                {
+                    var employee = _contextEmployee.GetById(Convert.ToInt32(n));
+                    education.Employees.Add(employee);
+                }
                 _context.Add(education);
                 _context.Save();
                 TempData["success"] = "Uspješno dodavanje nove edukacije!";
                 return RedirectToAction("Index");
             }
+            ViewBag.Employee = _contextEmployee.GetAll();
+            ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
+            ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
+            ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
+
             return View(education);
         }
 
         // GET: EducationController/Edit/5
         public ActionResult Edit(int id)
         {
-            var education = _context.GetById(id);
+            ViewBag.Employee = _contextEmployee.GetAll();
+            ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
+            ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
+            ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
+
+            var education = _context.GetEducation(id);
 
             if (education == null)
             {
@@ -64,15 +109,28 @@ namespace EmployeesManager.Web.Controllers
         // POST: EducationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Education education)
+        public ActionResult Edit(Education education, string[] Employees)
         {
             if (ModelState.IsValid)
             {
-                _context.Update(education);
+                var getById = _context.GetById(Convert.ToInt32(education.EducationId));
+                _context.Remove(getById);
+                _context.Save();
+                education.EducationId = 0;
+                foreach (var n in Employees)
+                {
+                    var employee = _contextEmployee.GetById(Convert.ToInt32(n));
+                    education.Employees.Add(employee);
+                }
+                _context.Add(education);
                 _context.Save();
                 TempData["success"] = "Uspješno ažuriranje edukacije!";
                 return RedirectToAction("Index");
             }
+            ViewBag.Employee = _contextEmployee.GetAll();
+            ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
+            ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
+            ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
             return View(education);
         }
 

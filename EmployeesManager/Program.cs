@@ -18,9 +18,12 @@ builder.Services.AddDbContext<EmployeesManagerDbContext>(options => options.UseS
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<IEmployeesRepository, EmployeeRepository>();
+builder.Services.AddTransient<IHealthCareRepository, HealthCareRepository>();
 builder.Services.AddTransient<IEducationsRepository, EducationRepository>();
 builder.Services.AddTransient<IClinicRepository, ClinicRepository>();
 builder.Services.AddTransient<IInstituteRepository, InstituteRepository>();
+builder.Services.AddTransient<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddTransient<IWorkplaceRepository, WorkplaceRepository>();
 
 
 builder.Services.Configure<IdentityOptions>(options =>

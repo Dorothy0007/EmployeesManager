@@ -19,7 +19,7 @@ namespace EmployeesManager.Model
         [Display(Name = "Lokacija")]
         public Location Location { get; set; }
 
-        //public IList<Institute> Institutes { get; set; }
+        public virtual ICollection<Institute> Institutes { get; set; }
     }
 
     public enum Location

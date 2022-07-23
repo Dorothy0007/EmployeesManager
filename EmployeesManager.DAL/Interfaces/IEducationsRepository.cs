@@ -9,5 +9,6 @@ namespace EmployeesManager.DAL.Interfaces
 {
     public interface IEducationsRepository : IGenericRepository<Education>
     {
+        Education GetEducation(int id);
     }
 }

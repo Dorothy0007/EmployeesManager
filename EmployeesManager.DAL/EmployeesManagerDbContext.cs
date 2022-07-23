@@ -26,9 +26,9 @@ namespace EmployeesManager.DAL
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Healthcare> Healthcares { get; set; }
         public DbSet<Education> Educations { get; set; }
-        public DbSet<Clinic> Clinics { get; set; }
-        public DbSet<Institute> Institutes { get; set; }
-        public DbSet<Department> Departments { get; set; }
-        public DbSet<Workplace> Workplaces { get; set; }
+        public DbSet<Clinic>? Clinics { get; set; }
+        public DbSet<Institute>? Institutes { get; set; }
+        public DbSet<Department>? Departments { get; set; }
+        public DbSet<Workplace>? Workplaces { get; set; }
     }
 }

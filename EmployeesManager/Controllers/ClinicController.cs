@@ -34,22 +34,30 @@ namespace EmployeesManager.Web.Controllers
         // POST: ClinicController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Clinic clinic)
+        public IActionResult Create([Bind("NameShort,NameLong,HeadClinic,Location")] Clinic clinic)
         {
-            if (ModelState.IsValid)
+            try
             {
                 _context.Add(clinic);
                 _context.Save();
                 TempData["success"] = "Uspješno dodavanje nove klinike!";
                 return RedirectToAction("Index");
             }
+            catch { }
             return View(clinic);
         }
 
         // GET: ClinicController/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
-            var clinic = _context.GetById(id);
+            //var clinic = _context.GetById(id);
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var clinic = _context.GetById((int)id);
 
             if (clinic == null)
             {
@@ -62,15 +70,21 @@ namespace EmployeesManager.Web.Controllers
         // POST: ClinicController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Clinic clinic)
+        public IActionResult Edit(int id, [Bind("ClinicId,NameShort,NameLong,HeadClinic,Location")] Clinic clinic)
         {
-            if (ModelState.IsValid)
+            if(id != clinic.ClinicId)
+            {
+                return NotFound();
+            }
+
+            try
             {
                 _context.Update(clinic);
                 _context.Save();
                 TempData["success"] = "Uspješno ažuriranje klinike!";
                 return RedirectToAction("Index");
             }
+            catch { }
             return View(clinic);
         }
 

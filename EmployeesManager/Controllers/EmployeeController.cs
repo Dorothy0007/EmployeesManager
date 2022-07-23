@@ -20,9 +20,11 @@ namespace EmployeesManager.Web.Controllers
         //}
 
         private readonly IEmployeesRepository _context;
-        public EmployeeController(IEmployeesRepository context)
+        private readonly IHealthCareRepository _healthCare;
+        public EmployeeController(IEmployeesRepository context, IHealthCareRepository healthCare)
         {
             _context = context;
+            _healthCare = healthCare;
         }
 
         public IActionResult Index()
@@ -33,22 +35,38 @@ namespace EmployeesManager.Web.Controllers
         // GET
         public IActionResult Create()
         {
-          return View();
+            ViewBag.HealthcareName = Enum.GetNames(typeof(HealthcareName)).ToArray();
+            return View();
         }
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Create(Employee employee)
         {
-            if (ModelState.IsValid)
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult CreateEmployee(Employee employee, string[] Step)
+        {
+            _context.Add(employee);
+            _context.Save();
+            var employees = _context.GetAll().OrderByDescending(x => x.EmployeeId).Take(1).LastOrDefault();
+            List<Healthcare> Healthcare = new List<Healthcare>();
+            foreach (var n in Step)
             {
-                _context.Add(employee);
-                _context.Save();
-                TempData["success"] = "Uspješno dodavanje novog zaposlenika!";
-                return RedirectToAction("Index");
+                var data = n.Split(',');
+                Healthcare.Add(new Healthcare
+                {
+                    HealthcareName = data[0],
+                    ValidUntil = Convert.ToDateTime(data[1]),
+                    Remark = data[2],
+                    EmployeeId = employees.EmployeeId,
+                });
             }
-            return View(employee);
+            _healthCare.AddRange(Healthcare);
+            _healthCare.Save();
+            return Json(true);
         }
 
         //GET
@@ -59,7 +77,8 @@ namespace EmployeesManager.Web.Controllers
                 return NotFound();
             }
 
-            var employee = _context.GetById(id);
+            ViewBag.HealthcareName = Enum.GetNames(typeof(HealthcareName)).ToArray();
+            var employee = _context.GetEmployee(id);
 
             if (employee == null)
             {
@@ -71,17 +90,31 @@ namespace EmployeesManager.Web.Controllers
 
         //POST
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Employee employee)
+        public IActionResult EditEmployee(Employee employee, string[] Step)
         {
-            if (ModelState.IsValid)
+            _context.Update(employee);
+            _context.Save();
+            var healthCare = _healthCare.GetHealthCare(employee.EmployeeId);
+            if (healthCare.Count > 0)
             {
-                _context.Update(employee);
-                _context.Save();
-                TempData["success"] = "Uspješno ažuriranje zaposlenika!";
-                return RedirectToAction("Index");
+                _healthCare.RemoveRange(healthCare);
+                _healthCare.Save();
             }
-            return View(employee);
+            List<Healthcare> Healthcare = new List<Healthcare>();
+            foreach (var n in Step)
+            {
+                var data = n.Split(',');
+                Healthcare.Add(new Healthcare
+                {
+                    HealthcareName = data[0],
+                    ValidUntil = Convert.ToDateTime(data[1]),
+                    Remark = data[2],
+                    EmployeeId = employee.EmployeeId,
+                });
+            }
+            _healthCare.AddRange(Healthcare);
+            _healthCare.Save();
+            return Json(true);
         }
 
         // GET

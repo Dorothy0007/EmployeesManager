@@ -10,15 +10,16 @@ namespace EmployeesManager.Model
     public class Institute
     {
         public int InstituteId { get; set; }
+        [Display(Name = "Šifra Zavoda")]
         public string NameShort { get; set; }
+        [Display(Name = "Naziv Zavoda")]
         public string NameLong { get; set; }
         [Display(Name = "Pročelnik Zavoda")]
         public string HeadInstitute { get; set; }
         [Display(Name = "Mjesto troška")]
         public string ExpenseCode { get; set; }
 
-        public int ClinicId { get; set; }
-        public Clinic Clinic { get; set; }
+        public virtual Clinic Clinic { get; set; }
 
         public IList<Department> Departments { get; set; }
     }

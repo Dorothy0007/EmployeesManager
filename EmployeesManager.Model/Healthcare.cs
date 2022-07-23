@@ -14,13 +14,13 @@ namespace EmployeesManager.Model
 
         }
         public int HealthcareId { get; set; }
-        public HealthcareName HealthcareName { get; set; }
+        public string HealthcareName { get; set; }
         [DataType(DataType.Date)]
         public DateTime ValidUntil { get; set; }
         public string Remark { get; set; }
 
+        public int? EmployeeId { get; set; }
         public Employee Employee { get; set; }
-
     }
 
     public enum HealthcareName

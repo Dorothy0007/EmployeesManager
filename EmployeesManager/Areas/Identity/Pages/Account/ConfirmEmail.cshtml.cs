@@ -39,12 +39,12 @@ namespace EmployeesManager.Web.Areas.Identity.Pages.Account
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
+                return NotFound($"Nemogućnost učitavanja korisnika s ID-em '{userId}'.");
             }
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            StatusMessage = result.Succeeded ? "Hvala Vam na potvrdi Vaše adrese e-pošte." : "Pogreška prilikom potvrde Vaše adrese e-pošte.";
             return Page();
         }
     }

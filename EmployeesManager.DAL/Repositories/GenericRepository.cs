@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace EmployeesManager.DAL
         {
             _context.Set<T>().Add(entity);
         }
-        public void AddRange(IEnumerable<T> entities)
+        public void AddRange(List<T> entities)
         {
             _context.Set<T>().AddRange(entities);
         }
@@ -52,8 +53,9 @@ namespace EmployeesManager.DAL
 
         public void Update(T entity)
         {
-            _context.Set<T>().Update(entity);
-            
+            _context.Set<T>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+
         }
     }
 }

@@ -14,5 +14,10 @@ namespace EmployeesManager.DAL.Repositories
         public ClinicRepository(EmployeesManagerDbContext context) : base(context)
         {
         }
+
+        public virtual IEnumerable<Clinic> GetAll()
+        {
+            return _context.Clinics.Include(i => i.Institutes).ToList();
+        }
     }
 }

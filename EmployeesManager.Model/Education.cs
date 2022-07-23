@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -15,23 +16,23 @@ namespace EmployeesManager.Model
         public string EducationName { get; set; }
        
         [Display(Name = "Vrsta edukacije")]
-        public EducationCategory EducationCategory { get; set; }
+        public string EducationCategory { get; set; }
         
         [Display(Name = "Tip edukacije")]
-        public EducationType EducationType { get; set; }
+        public string EducationType { get; set; }
         
         [Display(Name = "Tip sudjelovanja")]
-        public ParticipationType ParticipationType { get; set; }
+        public string ParticipationType { get; set; }
        
         [Display(Name = "Datum početka")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy.}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:dd.MM.yyyy.}", ApplyFormatInEditMode = true)]
         public DateTime BeginDate { get; set; }
         
         [Display(Name = "Datum završetka")]
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
-        
+
         [Display(Name = "Opis")]
         public string Description { get; set; }
         
@@ -44,12 +45,13 @@ namespace EmployeesManager.Model
         public ICollection<Employee>? Employees { get; set; }
     }
 
+
     public enum EducationType
     {
         [Display(Name = "Usavršavanja unutar Zavoda")]
         UsavrsavanjaUnutarZavoda,
         [Display(Name = "Usavršavanja izvan Zavoda")]
-        UsavrsavanjaIzvanZavoda,
+        UsavrsavanjaIzvanZavoda, 
         [Display(Name = "Edukacije specijalizanata")]
         EdukacijeSpecijalizanata,
         [Display(Name = "Edukacije stažista")]
@@ -83,7 +85,7 @@ namespace EmployeesManager.Model
         [Display(Name = "Radionica")]
         Radionica,
         [Display(Name = "Radionice / predavanja / edukacije")]
-        RadionicePRedavanjaEdukacije,
+        RadionicePredavanjaEdukacije,
         [Display(Name = "Specijalistički obilasci")]
         SpecijalistickiObilasci,
         [Display(Name = "Stažistički obilasci")]
