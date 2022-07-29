@@ -1,12 +1,15 @@
 ﻿using EmployeesManager.DAL;
 using EmployeesManager.DAL.Interfaces;
 using EmployeesManager.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EmployeesManager.Web.Controllers
 {
+
+    [Authorize(Roles = "Admin, User")]
     public class EducationController : Controller
     {
         private readonly IEducationsRepository _context;

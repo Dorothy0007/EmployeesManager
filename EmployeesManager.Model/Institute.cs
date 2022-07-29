@@ -19,8 +19,9 @@ namespace EmployeesManager.Model
         [Display(Name = "Mjesto troška")]
         public string ExpenseCode { get; set; }
 
-        public virtual Clinic Clinic { get; set; }
+        public int? ClinicId { get; set; }
+        public Clinic Clinic { get; set; }
 
-        public IList<Department> Departments { get; set; }
+        public ICollection<Department>? Departments { get; set; }
     }
 }

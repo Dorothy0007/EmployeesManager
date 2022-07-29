@@ -1,9 +1,11 @@
 ﻿using EmployeesManager.DAL.Interfaces;
 using EmployeesManager.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeesManager.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class InstituteController : Controller
     {
         private readonly IInstituteRepository _context;

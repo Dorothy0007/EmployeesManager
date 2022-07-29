@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using EmployeesManager.DAL.Interfaces;
 using EmployeesManager.DAL.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<EmployeesManagerDbContext>();
 
 builder.Services.AddDbContext<EmployeesManagerDbContext>(options => options.UseSqlServer(
@@ -25,6 +26,11 @@ builder.Services.AddTransient<IInstituteRepository, InstituteRepository>();
 builder.Services.AddTransient<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddTransient<IWorkplaceRepository, WorkplaceRepository>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ElevatedRights",
+         policy => policy.RequireRole("Admin", "User"));
+});
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

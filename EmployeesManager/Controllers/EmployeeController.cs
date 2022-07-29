@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace EmployeesManager.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin, User")]
     public class EmployeeController : Controller
     {
 

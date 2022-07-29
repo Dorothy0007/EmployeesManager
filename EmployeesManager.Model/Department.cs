@@ -19,9 +19,9 @@ namespace EmployeesManager.Model
         [Display(Name = "Šifra aktivnosti")]
         public string ActivityCode { get; set; }
 
-        public int InstituteId { get; set; }
+        public int? InstituteId { get; set; }
         public Institute Institute{ get; set; }
 
-        public IList<Workplace> Workplaces { get; set; }
+        public ICollection<Workplace>? Workplaces { get; set; }
     }
 }
