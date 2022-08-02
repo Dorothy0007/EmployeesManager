@@ -4,6 +4,7 @@ using EmployeesManager.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeesManager.DAL.Migrations
 {
     [DbContext(typeof(EmployeesManagerDbContext))]
-    partial class EmployeesManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220729133027_addEducationCategory")]
+    partial class addEducationCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,13 +119,6 @@ namespace EmployeesManager.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EducationCategory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("EducationCategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("EducationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -131,9 +126,6 @@ namespace EmployeesManager.DAL.Migrations
                     b.Property<string>("EducationType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("EducationTypeId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -145,20 +137,11 @@ namespace EmployeesManager.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParticipationTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Remark")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("EducationId");
-
-                    b.HasIndex("EducationCategoryId");
-
-                    b.HasIndex("EducationTypeId");
-
-                    b.HasIndex("ParticipationTypeId");
 
                     b.ToTable("Educations");
                 });
@@ -175,26 +158,16 @@ namespace EmployeesManager.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("EducationCategoryId");
-
-                    b.ToTable("EducationCategories");
-                });
-
-            modelBuilder.Entity("EmployeesManager.Model.EducationType", b =>
-                {
-                    b.Property<int>("EducationTypeId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("EducationId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EducationTypeId"), 1L, 1);
+                    b.HasKey("EducationCategoryId");
 
-                    b.Property<string>("EducationTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("EducationId")
+                        .IsUnique()
+                        .HasFilter("[EducationId] IS NOT NULL");
 
-                    b.HasKey("EducationTypeId");
-
-                    b.ToTable("EducationTypes");
+                    b.ToTable("EducationCategories");
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Employee", b =>
@@ -332,23 +305,6 @@ namespace EmployeesManager.DAL.Migrations
                     b.HasIndex("ClinicId");
 
                     b.ToTable("Institutes");
-                });
-
-            modelBuilder.Entity("EmployeesManager.Model.ParticipationType", b =>
-                {
-                    b.Property<int>("ParticipationTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParticipationTypeId"), 1L, 1);
-
-                    b.Property<string>("ParticipationTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ParticipationTypeId");
-
-                    b.ToTable("ParticipationTypes");
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Workplace", b =>
@@ -607,19 +563,13 @@ namespace EmployeesManager.DAL.Migrations
                     b.Navigation("Institute");
                 });
 
-            modelBuilder.Entity("EmployeesManager.Model.Education", b =>
+            modelBuilder.Entity("EmployeesManager.Model.EducationCategory", b =>
                 {
-                    b.HasOne("EmployeesManager.Model.EducationCategory", null)
-                        .WithMany("Education")
-                        .HasForeignKey("EducationCategoryId");
+                    b.HasOne("EmployeesManager.Model.Education", "Education")
+                        .WithOne("EducationCategory")
+                        .HasForeignKey("EmployeesManager.Model.EducationCategory", "EducationId");
 
-                    b.HasOne("EmployeesManager.Model.EducationType", null)
-                        .WithMany("Education")
-                        .HasForeignKey("EducationTypeId");
-
-                    b.HasOne("EmployeesManager.Model.ParticipationType", null)
-                        .WithMany("Education")
-                        .HasForeignKey("ParticipationTypeId");
+                    b.Navigation("Education");
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Healthcare", b =>
@@ -710,14 +660,10 @@ namespace EmployeesManager.DAL.Migrations
                     b.Navigation("Workplaces");
                 });
 
-            modelBuilder.Entity("EmployeesManager.Model.EducationCategory", b =>
+            modelBuilder.Entity("EmployeesManager.Model.Education", b =>
                 {
-                    b.Navigation("Education");
-                });
-
-            modelBuilder.Entity("EmployeesManager.Model.EducationType", b =>
-                {
-                    b.Navigation("Education");
+                    b.Navigation("EducationCategory")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EmployeesManager.Model.Employee", b =>
@@ -728,11 +674,6 @@ namespace EmployeesManager.DAL.Migrations
             modelBuilder.Entity("EmployeesManager.Model.Institute", b =>
                 {
                     b.Navigation("Departments");
-                });
-
-            modelBuilder.Entity("EmployeesManager.Model.ParticipationType", b =>
-                {
-                    b.Navigation("Education");
                 });
 #pragma warning restore 612, 618
         }

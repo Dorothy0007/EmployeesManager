@@ -1,0 +1,30 @@
+﻿@using EmployeesManager.Model
+@model EducationType
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<form method="post" asp-action="Edit">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Ažuriranje vrste edukacije</h2>
+            <hr />
+        <div class="form-group">
+                <label asp-for="EducationTypeName" class="control-label"></label>
+                <input asp-for="EducationTypeName" class="form-control" />
+                <input type="hidden" asp-for="EducationTypeId" class="form-control" />
+                <span asp-validation-for="EducationTypeName" class="text-danger"></span>
+        </div>
+        <br />
+         <div class="row pt-4">
+             <div class="col-6">
+                 <button type="submit" class="btn btn-primary">Spremi promjene</button>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="EducationType" asp-action="Index" class="btn btn-secondary">Natrag na popis vrsti edukacija</a>
+            </div>
+         </div>
+    </div>
+    </div>
+</form>

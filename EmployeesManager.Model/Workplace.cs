@@ -10,9 +10,9 @@ namespace EmployeesManager.Model
     public class Workplace
     {
         public int WorkplaceId { get; set; }
-        [Display(Name = "Šifra odjela")]
+        [Display(Name = "Šifra radilišta")]
         public string NameShort { get; set; }
-        [Display(Name = "Naziv odjela")]
+        [Display(Name = "Naziv radilišta")]
         public string NameLong { get; set; }
         [Display(Name = "Mjesto troška")] 
         public string ExpenseCode { get; set; }

@@ -1,0 +1,45 @@
+﻿@using EmployeesManager.Model
+@model IEnumerable<ParticipationType>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<partial name="_Notification" />
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Popis vrsti sudjelovanja</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="ParticipationType" asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> &nbsp; Nova vrsta sudjelovanja</a>
+        </div>
+    </div>
+    <br /><br />
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.Label("Naziv")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParticipationTypeName)
+            </td>
+            <td class="text-end">
+                <div class="btn-group" role="group">
+                    <a asp-controller="ParticipationType" asp-action="Edit" asp-route-id="@item.ParticipationTypeId" class="btn btn-primary mx-2"><i class="bi bi-pen-fill"></i> &nbsp Uredi</a>
+                     <a asp-controller="ParticipationType" asp-action="Delete" asp-route-id="@item.ParticipationTypeId" class="btn btn-danger mx-2"><i class="bi bi-trash3-fill"></i> &nbsp Obriši</a> 
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

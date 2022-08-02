@@ -10,11 +10,11 @@ namespace EmployeesManager.Model
     public class Institute
     {
         public int InstituteId { get; set; }
-        [Display(Name = "Šifra Zavoda")]
+        [Display(Name = "Šifra zavoda")]
         public string NameShort { get; set; }
-        [Display(Name = "Naziv Zavoda")]
+        [Display(Name = "Naziv zavoda")]
         public string NameLong { get; set; }
-        [Display(Name = "Pročelnik Zavoda")]
+        [Display(Name = "Pročelnik zavoda")]
         public string HeadInstitute { get; set; }
         [Display(Name = "Mjesto troška")]
         public string ExpenseCode { get; set; }

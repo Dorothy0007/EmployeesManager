@@ -30,5 +30,8 @@ namespace EmployeesManager.DAL
         public DbSet<Institute>? Institutes { get; set; }
         public DbSet<Department>? Departments { get; set; }
         public DbSet<Workplace>? Workplaces { get; set; }
+        public DbSet<EducationCategory> EducationCategories { get; set; }
+        public DbSet<EducationType> EducationTypes { get; set; }
+        public DbSet<ParticipationType> ParticipationTypes { get; set; }
     }
 }

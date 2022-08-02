@@ -10,9 +10,11 @@ namespace EmployeesManager.Model
     public class Department
     {
         public int DepartmentId { get; set; }
+        [Display(Name = "Šifra odjela")]
         public string NameShort { get; set; }
+        [Display(Name = "Naziv odjela")]
         public string NameLong { get; set; }
-        [Display(Name = "Voditelj Odjela")]
+        [Display(Name = "Voditelj odjela")]
         public int HeadDepartmentId { get; set; }
         [Display(Name = "Mjesto troška")]
         public string ExpenseCode { get; set; }

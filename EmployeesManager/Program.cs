@@ -25,6 +25,9 @@ builder.Services.AddTransient<IClinicRepository, ClinicRepository>();
 builder.Services.AddTransient<IInstituteRepository, InstituteRepository>();
 builder.Services.AddTransient<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddTransient<IWorkplaceRepository, WorkplaceRepository>();
+builder.Services.AddTransient<IEducationCategoryRepository, EducationCategoryRepository>();
+builder.Services.AddTransient<IEducationTypeRepository, EducationTypeRepository>();
+builder.Services.AddTransient<IParticipationTypeRepository, ParticipationTypeRepository>();
 
 builder.Services.AddAuthorization(options =>
 {

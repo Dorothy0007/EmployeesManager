@@ -14,10 +14,18 @@ namespace EmployeesManager.Web.Controllers
     {
         private readonly IEducationsRepository _context;
         private readonly IEmployeesRepository _contextEmployee;
-        public EducationController(IEducationsRepository context, IEmployeesRepository contextEmployee)
+        private readonly IEducationCategoryRepository _contextCategory;
+        private readonly IEducationTypeRepository _contextEducationType;
+        private readonly IParticipationTypeRepository _contextParticipationType;
+
+        public EducationController(IEducationsRepository context, IEmployeesRepository contextEmployee, IEducationCategoryRepository contextCategory,
+                                        IEducationTypeRepository contextEducationType, IParticipationTypeRepository contextParticipationType)
         {
             _context = context;
             _contextEmployee = contextEmployee;
+            _contextCategory = contextCategory;
+            _contextParticipationType = contextParticipationType;
+            _contextEducationType = contextEducationType;
         }
 
         // GET: EducationController
@@ -35,9 +43,10 @@ namespace EmployeesManager.Web.Controllers
         // GET: EducationController/Create
         public ActionResult Create()
         {
-            ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
-            ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
-            ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
+            //ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
+            ViewBag.EducationCategory = _contextCategory.GetAll();
+            ViewBag.EducationType = _contextEducationType.GetAll();
+            ViewBag.ParticipationType = _contextParticipationType.GetAll();
             ViewBag.Employee = _contextEmployee.GetAll();
             return View();
         }
@@ -71,6 +80,7 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Education education, string[] Employees)
         {
+            //_contextCategory.Add(education.EducationCategory);
             if (ModelState.IsValid)
             {
                 foreach (var n in Employees)
@@ -84,9 +94,9 @@ namespace EmployeesManager.Web.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Employee = _contextEmployee.GetAll();
-            ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
-            ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
-            ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
+            ViewBag.EducationCategory = _contextCategory.GetAll();
+            ViewBag.EducationType = _contextEducationType.GetAll();
+            ViewBag.ParticipationType = _contextParticipationType.GetAll();
 
             return View(education);
         }
@@ -95,9 +105,9 @@ namespace EmployeesManager.Web.Controllers
         public ActionResult Edit(int id)
         {
             ViewBag.Employee = _contextEmployee.GetAll();
-            ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
-            ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
-            ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
+            ViewBag.EducationCategory = _contextCategory.GetAll();
+            ViewBag.EducationType = _contextEducationType.GetAll();
+            ViewBag.ParticipationType = _contextParticipationType.GetAll();
 
             var education = _context.GetEducation(id);
 
@@ -131,9 +141,9 @@ namespace EmployeesManager.Web.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Employee = _contextEmployee.GetAll();
-            ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
-            ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
-            ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
+            ViewBag.EducationCategory = _contextCategory.GetAll();
+            ViewBag.EducationType = _contextEducationType.GetAll();
+            ViewBag.ParticipationType = _contextParticipationType.GetAll();
             return View(education);
         }
 
