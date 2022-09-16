@@ -10,6 +10,8 @@ namespace EmployeesManager.Model
     public class ParticipationType
     {
         public int ParticipationTypeId { get; set; }
+
+        [Required(ErrorMessage = "Potrebno upisati naziv vrste sudjelovanja!")]
         [Display(Name = "Vrsta sudjelovanja")]
         public string ParticipationTypeName { get; set; }
 

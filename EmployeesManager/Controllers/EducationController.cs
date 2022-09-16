@@ -37,13 +37,39 @@ namespace EmployeesManager.Web.Controllers
         // GET: EducationController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            ViewBag.Employee = _contextEmployee.GetAll();
+            ViewBag.EducationCategory = _contextCategory.GetAll();
+            ViewBag.EducationType = _contextEducationType.GetAll();
+            ViewBag.ParticipationType = _contextParticipationType.GetAll();
+
+            var education = _context.GetEducation(id);
+
+            if (education == null)
+            {
+                return NotFound();
+            }
+
+            return View(education);
+        }
+        [HttpGet]
+        public ActionResult DetailsEmployee(int id)
+        {
+            ViewBag.Employee = _contextEmployee.GetAll();
+           
+            var education = _context.GetEducation(id);
+
+            if (education == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_DetailsEducation", education);
         }
 
         // GET: EducationController/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            //ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
             ViewBag.EducationCategory = _contextCategory.GetAll();
             ViewBag.EducationType = _contextEducationType.GetAll();
             ViewBag.ParticipationType = _contextParticipationType.GetAll();
@@ -51,33 +77,10 @@ namespace EmployeesManager.Web.Controllers
             return View();
         }
 
-        // POST: EducationController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(Education education, string[] Employees)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        foreach (var n in Employees)
-        //        {
-        //            var employee = _contextEmployee.GetById(Convert.ToInt32(n));
-        //            education.Employees.Add(employee);
-        //        }
-        //        _context.Add(education);
-        //        _context.Save();
-        //        TempData["success"] = "Uspješno dodavanje nove edukacije!";
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.Employee = _contextEmployee.GetAll();
-        //    ViewBag.EducationCategory = Enum.GetNames(typeof(EducationCategory)).ToArray();
-        //    ViewBag.EducationType = Enum.GetNames(typeof(EducationType)).ToArray();
-        //    ViewBag.ParticipationType = Enum.GetNames(typeof(ParticipationType)).ToArray();
-
-        //    return View(education);
-        //}
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create(Education education, string[] Employees)
         {
             //_contextCategory.Add(education.EducationCategory);
@@ -102,6 +105,7 @@ namespace EmployeesManager.Web.Controllers
         }
 
         // GET: EducationController/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             ViewBag.Employee = _contextEmployee.GetAll();
@@ -122,6 +126,7 @@ namespace EmployeesManager.Web.Controllers
         // POST: EducationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(Education education, string[] Employees)
         {
             if (ModelState.IsValid)
@@ -148,6 +153,7 @@ namespace EmployeesManager.Web.Controllers
         }
 
         // GET: EducationController/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             var education = _context.GetById(id);
@@ -163,6 +169,7 @@ namespace EmployeesManager.Web.Controllers
         // POST: EducationController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeletePost(int id)
         {
             var education = _context.GetById(id);

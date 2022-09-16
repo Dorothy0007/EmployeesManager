@@ -11,9 +11,12 @@
         <div class="col-6">
             <h2 class="text-primary">Popis zaposlenika</h2>
         </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Employee" asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> &nbsp; Novi zaposlenik</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="col-6 text-end">
+                <a asp-controller="Employee" asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> &nbsp; Novi zaposlenik</a>
         </div>
+        }
     </div>
     <br /><br />
 </div>
@@ -63,12 +66,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.BirthDate)
             </td>
-            <td>
-                <div class="btn-group" role="group">
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <div class="btn-group" role="group">
                     <a asp-controller="Employee" asp-action="Edit" asp-route-id="@item.EmployeeId" class="btn btn-primary mx-2"><i class="bi bi-pen-fill"></i> &nbsp Uredi</a>
                      <a asp-controller="Employee" asp-action="Delete" asp-route-id="@item.EmployeeId" class="btn btn-danger mx-2"><i class="bi bi-trash3-fill"></i> &nbsp Obriši</a> 
                 </div>
             </td>
+            }
+             @if (User.IsInRole("User"))
+                {
+                     <td>
+                        <div class="btn-group" role="group">
+                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-primary mx-2"><i class="bi bi-card-checklist"></i> &nbsp Detalji</a>
+                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-primary mx-2" data-toggle="modal" data-target="#employeeDetails"><i class="bi bi-list-check"></i> &nbsp Popis</a>
+                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-primary mx-2"><i class="bi bi-file-earmark-arrow-down-fill"></i> &nbsp</a>
+                </div>
+                    </td>
+                }
         </tr>
 }
     </tbody>

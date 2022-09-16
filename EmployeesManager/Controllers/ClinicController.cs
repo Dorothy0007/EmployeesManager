@@ -38,14 +38,13 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("NameShort,NameLong,HeadClinic,Location")] Clinic clinic)
         {
-            try
+            if(ModelState.IsValid)
             {
                 _context.Add(clinic);
                 _context.Save();
                 TempData["success"] = "Uspješno dodavanje nove klinike!";
                 return RedirectToAction("Index");
             }
-            catch { }
             return View(clinic);
         }
 

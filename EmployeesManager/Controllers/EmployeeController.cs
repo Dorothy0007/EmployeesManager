@@ -32,7 +32,26 @@ namespace EmployeesManager.Web.Controllers
             return View(_context.GetAll().ToList());
         }
 
+        public ActionResult Details(int id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            ViewBag.HealthcareName = Enum.GetNames(typeof(HealthcareName)).ToArray();
+            var employee = _context.GetEmployee(id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return View(employee);
+        }
+
         // GET
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewBag.HealthcareName = Enum.GetNames(typeof(HealthcareName)).ToArray();
@@ -41,35 +60,39 @@ namespace EmployeesManager.Web.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(Employee employee)
         {
             return RedirectToAction("Index");
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateEmployee(Employee employee, string[] Step)
         {
-            _context.Add(employee);
-            _context.Save();
-            var employees = _context.GetAll().OrderByDescending(x => x.EmployeeId).Take(1).LastOrDefault();
-            List<Healthcare> Healthcare = new List<Healthcare>();
-            foreach (var n in Step)
-            {
-                var data = n.Split(',');
-                Healthcare.Add(new Healthcare
+                _context.Add(employee);
+                _context.Save();
+                var employees = _context.GetAll().OrderByDescending(x => x.EmployeeId).Take(1).LastOrDefault();
+                List<Healthcare> Healthcare = new List<Healthcare>();
+                foreach (var n in Step)
                 {
-                    HealthcareName = data[0],
-                    ValidUntil = Convert.ToDateTime(data[1]),
-                    Remark = data[2],
-                    EmployeeId = employees.EmployeeId,
-                });
-            }
-            _healthCare.AddRange(Healthcare);
-            _healthCare.Save();
-            return Json(true);
+                    var data = n.Split(',');
+                    Healthcare.Add(new Healthcare
+                    {
+                        HealthcareName = data[0],
+                        ValidUntil = Convert.ToDateTime(data[1]),
+                        Remark = data[2],
+                        EmployeeId = employees.EmployeeId,
+                    });
+                }
+                _healthCare.AddRange(Healthcare);
+                _healthCare.Save();
+                return Json(true);
+           
         }
 
         //GET
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             if (id == null || id == 0)
@@ -90,6 +113,7 @@ namespace EmployeesManager.Web.Controllers
 
         //POST
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult EditEmployee(Employee employee, string[] Step)
         {
             _context.Update(employee);
@@ -118,6 +142,7 @@ namespace EmployeesManager.Web.Controllers
         }
 
         // GET
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var employee = _context.GetById(id);
@@ -133,6 +158,7 @@ namespace EmployeesManager.Web.Controllers
         // POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeletePost(int id)
         {
             var employee = _context.GetById(id);

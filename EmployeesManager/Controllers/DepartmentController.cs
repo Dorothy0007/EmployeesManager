@@ -38,13 +38,13 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Department department)
         {
-            if (ModelState.IsValid)
-            {
+            try{
                 _context.Add(department);
                 _context.Save();
                 TempData["success"] = "Uspješno dodavanje novog odjela!";
                 return RedirectToAction("Index");
-            }
+                }
+            catch { }
             return View(department);
         }
 

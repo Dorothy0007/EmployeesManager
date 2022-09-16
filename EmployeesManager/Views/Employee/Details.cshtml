@@ -2,15 +2,15 @@
 @model Employee
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Details";
     var name = String.Join(",",ViewBag.HealthcareName);
 
 }
 
-@*<form method="post" asp-action="Create">*@
+@*<form method="post" asp-action="Edit">*@
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Unos novog zaposlenika</h2>
+            <h2 class="text-primary">Detalji podataka o zaposleniku</h2>
             <hr />
         </div>
         <ul class="nav nav-tabs">
@@ -30,79 +30,80 @@
         <hr />
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane active show" id="home">
+        <input asp-for="EmployeeId" hidden />
         <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control" disabled/>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
         <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control" disabled/>
                 <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
         <div class="form-group">
                 <label asp-for="OIB" class="control-label"></label>
-                <input asp-for="OIB" class="form-control" />
+                <input asp-for="OIB" class="form-control" disabled/>
                 <span asp-validation-for="OIB" class="text-danger"></span>
         </div>
         <div class="form-group">
                 <label asp-for="MBO" class="control-label"></label>
-                <input asp-for="MBO" class="form-control" />
+                <input asp-for="MBO" class="form-control" disabled/>
                 <span asp-validation-for="MBO" class="text-danger"></span>
         </div>
         <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    <input class="form-check-input" asp-for="Active" disabled/> @Html.DisplayNameFor(model => model.Active)
                 </label>
         </div>
         <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" />
+                <input asp-for="BirthDate" class="form-control" disabled/>
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             </div>
             <div class="tab-pane fade" id="address">
-                   <div class="form-group">
+            <div class="form-group">
                 <label asp-for="Street" class="control-label"></label>
-                <input asp-for="Street" class ="form-control" />
+                <input asp-for="Street" class ="form-control" disabled/>
             </div>
             <div class="form-group">
                 <label asp-for="StreetNumber" class="control-label"></label>
-                <input asp-for="StreetNumber" class ="form-control"/>
+                <input asp-for="StreetNumber" class ="form-control" disabled/>
             </div>
             <div class="form-group">
                 <label asp-for="PostalCode" class="control-label"></label>
-                <input asp-for="PostalCode" class ="form-control"/>
+                <input asp-for="PostalCode" class ="form-control" disabled/>
             </div>
             <div class="form-group">
                 <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class ="form-control"/>
+                <input asp-for="City" class ="form-control" disabled/>
             </div>
             <div class="form-group">
                 <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class ="form-control"/>
+                <input asp-for="Country" class ="form-control" disabled/>
             </div>
             </div>
             <div class="tab-pane fade" id="contact">
                    <div class="form-group">
                 <label asp-for="BusinessEmail" class="control-label"></label>
-                <input asp-for="BusinessEmail" class ="form-control"/>
+                <input asp-for="BusinessEmail" class ="form-control" disabled/>
             </div>
              <div class="form-group">
                 <label asp-for="BusinessMobilePhone" class="control-label"></label>
-                <input asp-for="BusinessMobilePhone" class ="form-control"/>
+                <input asp-for="BusinessMobilePhone" class ="form-control" disabled/>
             </div>
              <div class="form-group">
                 <label asp-for="BusinessTelephone" class="control-label"></label>
-                <input asp-for="BusinessTelephone" class ="form-control"/>
+                <input asp-for="BusinessTelephone" class ="form-control" disabled/>
             </div>
              <div class="form-group">
                 <label asp-for="PrivateEmail" class="control-label"></label>
-                <input asp-for="PrivateEmail" class ="form-control"/>
+                <input asp-for="PrivateEmail" class ="form-control" disabled/>
             </div>
             <div class="form-group">
                 <label asp-for="PrivateMobilePhone" class="control-label"></label>
-                <input asp-for="PrivateMobilePhone" class ="form-control"/>
+                <input asp-for="PrivateMobilePhone" class ="form-control" disabled/>
             </div>
             </div>
             <div class="tab-pane fade" id="healthcare">
@@ -120,50 +121,53 @@
                 <td></td>
             </tr>
         </thead>
-        <tbody id="dataTable">
-        <tr id="tablerow0">
-            <td>
-                <select name="HealthcareName"  class = "form-control editor-field" id="HealthcareName">
+            <tbody id="dataTable">
+                @foreach(var s in Model.Healthcares)
+                {
+                 <tr id="tablerow0">
+                <td>
+                        <select name="HealthcareName"  class = "form-control editor-field" id="HealthcareName" disabled>
                              <option value="">[Unesite naziv]</option>
                             @foreach(var n in ViewBag.HealthcareName)
                             {
-                                 <option value="@n">@n</option>
+                                if(s.HealthcareName==n)
+                                {
+                                     <option value="@n" selected>@n</option>
+                                }
+                                else{
+                                     <option value="@n">@n</option>
+                                }
+                                
                             }
                            
-                </select>
-            </td>
-            <td>
-                        <input type="date" name="ValidUntil" id="ValidUntil" value=""  class="form-control editor-field"/>
+                        </select>
                 </td>
                 <td>
-                        <input class="text-box single-line form-control editor-field" id="Remark" value="" name="Remark" type="text"  />
+                        <input type="date" name="ValidUntil" id="ValidUntil" value="@s.ValidUntil.ToString("yyyy-MM-dd")"  class="form-control editor-field" disabled/>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-danger mx-2" value="button" onclick="removeTr(0);"><i class="bi bi-trash3-fill"></i> &nbsp Obriši zapis</button>
+                        <input class="text-box single-line form-control editor-field" id="Remark" value="@s.Remark" name="Remark" type="text" disabled />
                 </td>
             </tr>
+            }
         </tbody>
 
     </table>
-    <p>
-        <button id="add" type="button" class="btn btn-primary" >Dodaj zapis</button>
-    </p>
+    
     <hr />
-    </fieldset>
+</fieldset>
     
             </div>
             </div>
             <br />
          <div class="row pt-4">
              <div class="col-6">
-                 <button type="submit" class="btn btn-primary" onclick="FormSubmit()">Kreiraj</button>
-            </div>
+                </div>
             <div class="col-6 text-end">
                 <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">Natrag na popis zaposlenika</a>
             </div>
          </div>
     </div>
-@*</form>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -226,13 +230,15 @@
 
 
 
-            var formData = new FormData();
+            var formData = new FormData();            
+            formData.append("EmployeeId", $("#EmployeeId").val());
             formData.append("FirstName", $("#FirstName").val());
             formData.append("LastName", $("#LastName").val());
             formData.append("OIB", $("#OIB").val());
             formData.append("MBO", $("#MBO").val());
             formData.append("BirthDate", $("#BirthDate").val());
-            formData.append("Active", $("#Active").val());
+            //formData.append("Active", $("#Active").val());
+            formData.append("Active", $("#Active").is(':checked'));
             formData.append("Street", $("#Street").val());
             formData.append("StreetNumber", $("#StreetNumber").val());
             formData.append("PostalCode", $("#PostalCode").val());
@@ -243,7 +249,9 @@
             formData.append("BusinessTelephone", $("#BusinessTelephone").val());
             formData.append("BusinessMobilePhone", $("#BusinessMobilePhone").val());
             formData.append("PrivateMobilePhone", $("#PrivateMobilePhone").val());
-
+            //for (let [key, value] of formData) {
+            //  console.log(`${key}: ${value}`)
+            //}
             var HealthcareName;
             var ValidUntil;
             var Remark;
@@ -281,7 +289,7 @@
              console.log(formData);
             $.ajax({
                 type: 'POST',
-                 url: "/Employee/CreateEmployee",
+                 url: "/Employee/EditEmployee",
                 data: formData,
                 processData: false,
                 contentType: false

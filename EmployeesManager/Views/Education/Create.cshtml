@@ -19,7 +19,7 @@
         </div>
         <div class="editor-field">
             <label asp-for="EducationCategory" class="control-label"></label>
-             <select name="EducationCategory"  class = "form-control editor-field" id="EducationCategory">
+            <select name="EducationCategory"  class = "form-control editor-field" id="EducationCategory">
                     <option value="">[Unesite kategoriju edukacije]</option>
                     @foreach (var n in ViewBag.EducationCategory)
                     {
@@ -27,7 +27,7 @@
                     }
 
              </select>
-   
+                 
         </div>
         <div class="editor-field">
             <label asp-for="EducationType" class="control-label"></label>
@@ -111,7 +111,6 @@
           <link rel="stylesheet" href="~/lib//select2-bootstrap4-theme/select2-bootstrap4.min.css">
           <script src="~/lib//select2/js/select2.full.min.js"></script>
               <script>
-                  //Initialize Select2 Elements
         $('.select2bs4').select2({
           theme: 'bootstrap4'
         })

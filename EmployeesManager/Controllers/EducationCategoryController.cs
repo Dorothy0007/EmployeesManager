@@ -38,14 +38,14 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("CategoryName")] EducationCategory educationCategory)
         {
-            try
+            if(ModelState.IsValid)
             {
                 _context.Add(educationCategory);
                 _context.Save();
                 TempData["success"] = "Uspješno dodavanje nove kategorije!";
                 return RedirectToAction("Index");
             }
-            catch { }
+
             return View(educationCategory);
         }
 

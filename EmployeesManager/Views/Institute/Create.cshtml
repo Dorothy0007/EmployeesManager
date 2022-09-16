@@ -32,10 +32,17 @@
                 <input asp-for="ExpenseCode" class="form-control" />
                 <span asp-validation-for="ExpenseCode" class="text-danger"></span>
         </div>
-        @*<div class="form-group">
-                <label asp-for="ClinicId" class="control-label"></label>
-                <select asp-for="ClinicId" asp-items="Model.Clinics"></select>
-                <span asp-validation-for="ExpenseCode" class="text-danger"></span>
+        @*<div class="editor-field">
+            <label asp-for="Clinic" class="control-label"></label>
+             <select name="Clinic"  class = "form-control editor-field" id="Clinic">
+                    <option value="">[Odaberite kliniku]</option>
+                    @foreach (var n in ViewBag.Clinic)
+                    {
+                        <option value="@n.NameLong">@n.NameLong</option>
+                    }
+
+             </select>
+   
         </div>*@
          <br />
          <div class="row pt-4">

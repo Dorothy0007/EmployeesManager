@@ -11,6 +11,7 @@ namespace EmployeesManager.Model
         [Required(ErrorMessage = "Potrebno upisati ime!")]
         public string FirstName { get; set; }
 
+
         [Display(Name = "Prezime")]
         [Required(ErrorMessage = "Potrebno upisati prezime!")]
         public string LastName { get; set; }

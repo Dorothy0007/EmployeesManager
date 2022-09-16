@@ -10,6 +10,7 @@ namespace EmployeesManager.Model
     public class EducationType
     {
         public int EducationTypeId { get; set; }
+        [Required(ErrorMessage = "Potrebno upisati naziv vrste edukacije!")]
         [Display(Name = "Vrsta edukacije")]
         public string EducationTypeName { get; set; }
 

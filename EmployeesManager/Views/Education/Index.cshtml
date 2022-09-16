@@ -6,19 +6,23 @@
 
 <partial name="_Notification" />
 
+
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
             <h2 class="text-primary">Popis edukacija</h2>
         </div>
+        @if (User.IsInRole("Admin"))
+                {
         <div class="col-6 text-end">
             <a asp-controller="Education" asp-action="Create" class="btn btn-primary"><i class="bi bi-eyeglasses"></i> &nbsp; Nova edukacija</a>
         </div>
+                }
     </div>
     <br /><br />
 </div>
 
-<table class="table">
+<table class="table" id="CustomerGrid">
     <thead>
         <tr>
             <th>
@@ -39,9 +43,9 @@
             <th>
                 @Html.Label("Datum završetka")
             </th>
-            <th>
+            @*<th>
                 @Html.Label("Opis")
-            </th>
+            </th>*@
             <th>
                 @Html.Label("Napomena")
             </th>
@@ -72,21 +76,34 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EndDate)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Remark)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Mandatory)
             </td>
+            @if (User.IsInRole("Admin"))
+                {
             <td>
                 <div class="btn-group" role="group">
                     <a asp-controller="Education" asp-action="Edit" asp-route-id="@item.EducationId" class="btn btn-primary mx-2"><i class="bi bi-pen-fill"></i> &nbsp Uredi</a>
                      <a asp-controller="Education" asp-action="Delete" asp-route-id="@item.EducationId" class="btn btn-danger mx-2"><i class="bi bi-trash3-fill"></i> &nbsp Obriši</a> 
                 </div>
             </td>
+                }
+                @if (User.IsInRole("User"))
+                {
+                <td>
+                <div class="btn-group" role="group">
+                    <a asp-controller="Education" asp-action="Details" asp-route-id="@item.EducationId" class="btn btn-primary mx-2"><i class="bi bi-card-checklist"></i> &nbsp Detalji</a>
+                    <a asp-controller="Education" asp-action="DetailsEmployee" asp-route-id="@item.EducationId" class="btn btn-primary mx-2"><i class="bi bi-list-check"></i> &nbsp Popis</a>
+                    <a asp-controller="Education" asp-action="Details" asp-route-id="@item.EducationId" class="btn btn-primary mx-2"><i class="bi bi-file-earmark-arrow-down-fill"></i> &nbsp</a>
+                </div>
+            </td>
+                }
         </tr>
 }
     </tbody>

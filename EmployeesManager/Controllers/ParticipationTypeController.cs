@@ -38,14 +38,14 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ParticipationTypeName")] ParticipationType participationType)
         {
-            try
+            if(ModelState.IsValid)
             {
                 _context.Add(participationType);
                 _context.Save();
                 TempData["success"] = "Uspješno dodavanje nove vrste sudjelovanja!";
                 return RedirectToAction("Index");
             }
-            catch { }
+            
             return View(participationType);
         }
 

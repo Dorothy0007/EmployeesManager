@@ -15,7 +15,7 @@ namespace EmployeesManager.Model
         [Display(Name = "Naziv odjela")]
         public string NameLong { get; set; }
         [Display(Name = "Voditelj odjela")]
-        public int HeadDepartmentId { get; set; }
+        public string HeadDepartmentName { get; set; }
         [Display(Name = "Mjesto troška")]
         public string ExpenseCode { get; set; }
         [Display(Name = "Šifra aktivnosti")]

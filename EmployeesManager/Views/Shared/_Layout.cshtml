@@ -14,51 +14,52 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" asp-controller="Home" asp-action="Index">Baza djelatnika</a>
+    @*<a class="navbar-brand" asp-controller="Employee" asp-action="Index">Baza djelatnika</a>*@
+    @if (User.IsInRole("Admin") || User.IsInRole("User"))
+    {
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarColor02">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-           <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Početna</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="Index">Zaposlenici</a>
-        </li>
-        @*<li class="nav-item">
-          <a class="nav-link" href="#">Sistematizacija</a>
-        </li>*@
-        <li class="nav-item">
-          <a class="nav-link" asp-area="" asp-controller="Education" asp-action="Index">Edukacije</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sistematizacija</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" asp-controller="Clinic" asp-action="Index">Klinike</a>
-            <a class="dropdown-item" asp-controller="Institute" asp-action="Index">Zavodi</a>
-            <a class="dropdown-item" asp-controller="Department" asp-action="Index">Odjeli</a>
-            <a class="dropdown-item" asp-controller="Workplace" asp-action="Index">Radilišta</a>
-            @*<div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>*@
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administracija</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" asp-controller="EducationCategory" asp-action="Index">Kategorije edukacija</a>
-            <a class="dropdown-item" asp-controller="EducationType" asp-action="Index">Vrste edukacija</a>
-            <a class="dropdown-item" asp-controller="ParticipationType" asp-action="Index">Vrste sudjelovanja</a>
-          </div>
-        </li>
-      </ul>
-     @* <form class="d-flex">
-        <input class="form-control me-sm-2" type="text" placeholder="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-      </form>*@
-    </div>
-     <partial name="_LoginPartial" />
+                        <ul class="navbar-nav me-auto">
+                            @*<li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Početna</a>
+                                </li>*@
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="Index">Zaposlenici</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Education" asp-action="Index">Edukacije</a>
+                            </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sistematizacija</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-controller="Clinic" asp-action="Index">Klinike</a>
+                                        <a class="dropdown-item" asp-controller="Institute" asp-action="Index">Zavodi</a>
+                                        <a class="dropdown-item" asp-controller="Department" asp-action="Index">Odjeli</a>
+                                        <a class="dropdown-item" asp-controller="Workplace" asp-action="Index">Radilišta</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administracija</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-controller="EducationCategory" asp-action="Index">Kategorije edukacija</a>
+                                        <a class="dropdown-item" asp-controller="EducationType" asp-action="Index">Vrste edukacija</a>
+                                        <a class="dropdown-item" asp-controller="ParticipationType" asp-action="Index">Vrste sudjelovanja</a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                        @* <form class="d-flex">
+                            <input class="form-control me-sm-2" type="text" placeholder="Search">
+                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                            </form>*@
+                    </div>
+                }
+                <partial name="_LoginPartial" />
   </div>
 </nav>
     </header>

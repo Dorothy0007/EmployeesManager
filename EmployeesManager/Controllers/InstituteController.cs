@@ -37,13 +37,14 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Institute institute)
         {
-            if (ModelState.IsValid)
+            try
             {
                 _context.Add(institute);
                 _context.Save();
                 TempData["success"] = "Uspješno dodavanje novog Zavoda!";
                 return RedirectToAction("Index");
             }
+            catch { }
             return View(institute);
         }
 

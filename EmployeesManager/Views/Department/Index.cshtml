@@ -22,10 +22,10 @@
     <thead>
         <tr>
             <th>
-                @Html.Label("Šifra klinike")
+                @Html.Label("Šifra odjela")
             </th>
             <th>
-                @Html.Label("Naziv klinike")
+                @Html.Label("Naziv odjela")
             </th>
             <th>
                 @Html.Label("Voditelj odjela")
@@ -49,7 +49,7 @@
                 @Html.DisplayFor(modelItem => item.NameLong)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HeadDepartmentId)
+                @Html.DisplayFor(modelItem => item.HeadDepartmentName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ExpenseCode)

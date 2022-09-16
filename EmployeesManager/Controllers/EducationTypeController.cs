@@ -38,14 +38,13 @@ namespace EmployeesManager.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("EducationTypeName")] EducationType educationType)
         {
-            try
+            if(ModelState.IsValid)
             {
                 _context.Add(educationType);
                 _context.Save();
                 TempData["success"] = "Uspješno dodavanje novog tipa edukacije!";
                 return RedirectToAction("Index");
             }
-            catch { }
             return View(educationType);
         }
 
