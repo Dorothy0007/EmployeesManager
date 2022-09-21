@@ -5,6 +5,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IO;
+using System.Data;
+using System.Linq;
+using ClosedXML.Excel;
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Xml;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using iTextSharp.tool.xml;
 
 namespace EmployeesManager.Web.Controllers
 {
@@ -63,7 +77,7 @@ namespace EmployeesManager.Web.Controllers
                 return NotFound();
             }
 
-            return PartialView("_DetailsEducation", education);
+            return View("DetailsEducation", education);
         }
 
         // GET: EducationController/Create
@@ -183,6 +197,75 @@ namespace EmployeesManager.Web.Controllers
             _context.Save();
             TempData["success"] = "Uspješno brisanje edukacije!";
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Export()
+        {
+            DataTable dt = new DataTable("Grid");
+            dt.Columns.AddRange(new DataColumn[4] { new DataColumn("Naziv edukacije"),
+                                        new DataColumn("Kategorija edukacije"),
+                                        new DataColumn("Vrsta edukacije"),
+                                        new DataColumn("Vrsta sudjelovanja") });
+
+            var educations = from education in this._context.GetAll()
+                            select education;
+
+            foreach (var education in educations)
+            {
+                dt.Rows.Add(education.EducationName, education.EducationCategory, education.EducationType, education.ParticipationType);
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Educations.xlsx");
+                }
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ExportSingle(int id)
+        {
+            DataTable dt = new DataTable("Grid");
+            dt.Columns.AddRange(new DataColumn[4] { new DataColumn("Naziv edukacije"),
+                                        new DataColumn("Kategorija edukacije"),
+                                        new DataColumn("Vrsta edukacije"),
+                                        new DataColumn("Vrsta sudjelovanja") });
+
+            var education = _context.GetById(id);
+
+            //foreach (var education in educations)
+            //{
+                dt.Rows.Add(education.EducationName, education.EducationCategory, education.EducationType, education.ParticipationType);
+            //}
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Education.xlsx");
+                }
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var educations = from e in _context.GetAll()
+                            select e;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                educations = educations.Where(e => (e.EducationName.ToLower()).Contains(searchString));
+            }
+
+            return View(educations.ToList());
         }
     }
 }

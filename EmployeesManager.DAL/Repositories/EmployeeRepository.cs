@@ -19,6 +19,11 @@ namespace EmployeesManager.DAL
         {
             return _context.Employees.Include(x => x.Healthcares).Where(x => x.EmployeeId == id).FirstOrDefault();
         }
+
+        public Employee GetEmployeeEducations(int id)
+        {
+            return _context.Employees.Include(x => x.Educations).Where(x => x.EmployeeId == id).FirstOrDefault();
+        }
     }
     public class HealthCareRepository : GenericRepository<Healthcare>, IHealthCareRepository
     {

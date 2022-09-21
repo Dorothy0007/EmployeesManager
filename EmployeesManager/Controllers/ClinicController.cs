@@ -16,9 +16,23 @@ namespace EmployeesManager.Web.Controllers
         }
 
         // GET: ClinicController
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString)
         {
             return View(_context.GetAll().ToList());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var clinics = from c in _context.GetAll()
+                            select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                clinics = clinics.Where(c => (c.NameLong.ToLower()).Contains(searchString) || (c.NameShort.ToLower()).Contains(searchString));
+            }
+
+            return View(clinics.ToList());
         }
 
         // GET: ClinicController/Details/5

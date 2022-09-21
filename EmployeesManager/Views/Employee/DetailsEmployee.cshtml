@@ -1,0 +1,54 @@
+﻿@using EmployeesManager.Model
+@model Employee
+
+@{
+    ViewData["Title"] = "DetailsEmployee";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Popis edukacija koje je zaposlenik pohađao</h2>
+        </div>
+    </div>
+    <br /><br />
+</div>
+ <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.Label("Naziv edukacije")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Educations) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EducationName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+            <br />
+         <div class="row pt-4">
+             <div class="col-6">
+                </div>
+             <div class="col-6 text-end">
+                <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">Natrag na popis zaposlenika</a>
+            </div>
+         </div>
+
+
+@section scripts{
+               <link rel="stylesheet" href="~/lib/select2/css/select2.min.css">
+              <link rel="stylesheet" href="~/lib//select2-bootstrap4-theme/select2-bootstrap4.min.css">
+              <script src="~/lib//select2/js/select2.full.min.js"></script>
+                  <script>
+                      $('.select2bs4').select2({
+              theme: 'bootstrap4'
+            })
+                  </script>
+}

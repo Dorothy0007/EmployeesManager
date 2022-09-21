@@ -11,6 +11,7 @@ namespace EmployeesManager.DAL
     {
         //popis metoda za implementaciju, specifičnih za Employee entitet uz već dodane generičke metode
         Employee GetEmployee(int id);
+        Employee GetEmployeeEducations(int id);
     }
     public interface IHealthCareRepository : IGenericRepository<Healthcare>
     {

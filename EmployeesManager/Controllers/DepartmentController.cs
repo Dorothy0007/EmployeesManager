@@ -21,6 +21,20 @@ namespace EmployeesManager.Web.Controllers
             return View(_context.GetAll().ToList());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var departments = from d in _context.GetAll()
+                          select d;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                departments = departments.Where(d => (d.NameLong.ToLower()).Contains(searchString) || (d.NameShort.ToLower()).Contains(searchString));
+            }
+
+            return View(departments.ToList());
+        }
+
         // GET: DepartmentController/Details/5
         public ActionResult Details(int id)
         {

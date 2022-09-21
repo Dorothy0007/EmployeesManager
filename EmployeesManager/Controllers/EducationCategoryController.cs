@@ -21,6 +21,20 @@ namespace EmployeesManager.Web.Controllers
             return View(_context.GetAll().ToList());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var educationCategories = from c in _context.GetAll()
+                             select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                educationCategories = educationCategories.Where(c => (c.CategoryName.ToLower()).Contains(searchString));
+            }
+
+            return View(educationCategories.ToList());
+        }
+
         // GET: EducationCategoryController/Details/5
         public ActionResult Details(int id)
         {

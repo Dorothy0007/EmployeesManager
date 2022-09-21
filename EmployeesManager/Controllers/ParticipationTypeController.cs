@@ -21,6 +21,20 @@ namespace EmployeesManager.Web.Controllers
             return View(_context.GetAll().ToList());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var participationTypes = from t in _context.GetAll()
+                                 select t;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                participationTypes = participationTypes.Where(t => (t.ParticipationTypeName.ToLower()).Contains(searchString));
+            }
+
+            return View(participationTypes.ToList());
+        }
+
         // GET: ParticipationTypeController/Details/5
         public ActionResult Details(int id)
         {

@@ -1,9 +1,12 @@
-﻿using EmployeesManager.DAL;
+﻿using ClosedXML.Excel;
+using EmployeesManager.DAL;
+using EmployeesManager.DAL.Interfaces;
 using EmployeesManager.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Linq;
 
 namespace EmployeesManager.Web.Controllers
@@ -11,25 +14,33 @@ namespace EmployeesManager.Web.Controllers
     [Authorize(Roles = "Admin, User")]
     public class EmployeeController : Controller
     {
-
-        //private readonly EmployeesManagerDbContext _db;
-
-        //public EmployeeController(EmployeesManagerDbContext db)
-        //{
-        //    _db = db;
-        //}
-
         private readonly IEmployeesRepository _context;
         private readonly IHealthCareRepository _healthCare;
-        public EmployeeController(IEmployeesRepository context, IHealthCareRepository healthCare)
+        private readonly IEducationsRepository _contextEducation;
+        public EmployeeController(IEmployeesRepository context, IHealthCareRepository healthCare, IEducationsRepository education)
         {
             _context = context;
             _healthCare = healthCare;
+            _contextEducation = education;
         }
 
         public IActionResult Index()
         {
             return View(_context.GetAll().ToList());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var employees = from e in _context.GetAll()
+                         select e;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                employees = employees.Where(e => (e.FirstName.ToLower()).Contains((searchString).ToLower()) || (e.LastName.ToLower()).Contains((searchString).ToLower()));
+            }
+
+            return View(employees.ToList());
         }
 
         public ActionResult Details(int id)
@@ -48,6 +59,20 @@ namespace EmployeesManager.Web.Controllers
             }
 
             return View(employee);
+        }
+
+        public ActionResult DetailsEmployee(int id)
+        {
+            ViewBag.Educations = _contextEducation.GetAll();
+
+            var employee = _context.GetEmployeeEducations(id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return View("DetailsEmployee", employee);
         }
 
         // GET
@@ -70,25 +95,25 @@ namespace EmployeesManager.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult CreateEmployee(Employee employee, string[] Step)
         {
-                _context.Add(employee);
-                _context.Save();
-                var employees = _context.GetAll().OrderByDescending(x => x.EmployeeId).Take(1).LastOrDefault();
-                List<Healthcare> Healthcare = new List<Healthcare>();
-                foreach (var n in Step)
+            _context.Add(employee);
+            _context.Save();
+            var employees = _context.GetAll().OrderByDescending(x => x.EmployeeId).Take(1).LastOrDefault();
+            List<Healthcare> Healthcare = new List<Healthcare>();
+            foreach (var n in Step)
+            {
+                var data = n.Split(',');
+                Healthcare.Add(new Healthcare
                 {
-                    var data = n.Split(',');
-                    Healthcare.Add(new Healthcare
-                    {
-                        HealthcareName = data[0],
-                        ValidUntil = Convert.ToDateTime(data[1]),
-                        Remark = data[2],
-                        EmployeeId = employees.EmployeeId,
-                    });
-                }
-                _healthCare.AddRange(Healthcare);
-                _healthCare.Save();
-                return Json(true);
-           
+                    HealthcareName = data[0],
+                    ValidUntil = Convert.ToDateTime(data[1]),
+                    Remark = data[2],
+                    EmployeeId = employees.EmployeeId,
+                });
+            }
+            _healthCare.AddRange(Healthcare);
+            _healthCare.Save();
+            return Json(true);
+
         }
 
         //GET
@@ -174,114 +199,7 @@ namespace EmployeesManager.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET
-        //    public async Task<IActionResult> Edit(int? id)
-        //    {
-        //        if (id == null || id == 0)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        var emp = _db.Employees.Where(x => x.EmployeeId == id).Select(x => new EmployeeViewModel()
-        //        {
-        //            EmployeeId = x.EmployeeId,
-        //            FirstName = x.FirstName,
-        //            LastName = x.LastName,
-        //            OIB = x.OIB,
-        //            MBO = x.MBO,
-        //            BirthDate = x.BirthDate,
-        //            Street = x.Street,
-        //            StreetNumber = x.StreetNumber,
-        //            PostalCode = x.PostalCode,
-        //            City = x.City,
-        //            Country = x.Country,
-        //            PrivateEmail = x.PrivateEmail,
-        //            PrivateMobilePhone = x.PrivateMobilePhone,
-        //            BusinessEmail = x.BusinessEmail,
-        //            BusinessMobilePhone = x.BusinessMobilePhone,
-        //            BusinessTelephone = x.BusinessTelephone,
-        //            Active = x.Active
-
-        //            //Healthcares = x.Healthcares.ToList()
-
-        //        }).FirstOrDefault();
-
-        //        //_db.Entry(emp).Collection(x => x.Healthcares).Load();
-
-        //        if (emp == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        return View(emp);
-        //    }
-
-        //    //POST
-        //   [HttpPost]
-        //   [ValidateAntiForgeryToken]
-        //    public IActionResult Edit(int? id, EmployeeViewModel emp)
-        //    {
-        //        var exemp = _db.Employees.Find(id);
-
-        //        if (exemp == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        //_db.Entry(exemp).Reference(x => x.Address).Load();
-        //        //_db.Entry(exemp).Reference(x => x.Contact).Load();
-
-        //        if (ModelState.IsValid)
-        //        {
-        //            _db.Employees.Update(GetEmployee(exemp, emp));
-        //            _db.SaveChanges();
-        //            TempData["success"] = "Uspješno ažuriranje zaposlenika!";
-        //            return RedirectToAction("Index");
-        //        }
-        //        return View(emp);
-        //    }
-
-        //    // GET
-        //    public IActionResult Delete(int? id)
-        //    {
-        //        if (id == null || id == 0)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        var emp = _db.Employees.Find(id);
-
-        //        if (emp == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        return View(emp);
-        //    }
-
-        //    // POST
-        //    [HttpPost, ActionName("Delete")]
-        //    [ValidateAntiForgeryToken]
-        //    public IActionResult DeletePost(int? id)
-        //    {
-        //        var emp = _db.Employees.Find(id);
-
-        //        if (emp == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        _db.Employees.Remove(emp);
-        //        _db.SaveChanges();
-        //        TempData["success"] = "Uspješno brisanje zaposlenika!";
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    //private bool EmployeeExists(int id)
-        //    //{
-        //    //    return _db.Employees.Any(e => e.EmployeeId == id);
-        //    //}
-
+        
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public IActionResult CreateOrEdit(EmployeeViewModel emp)
@@ -324,41 +242,68 @@ namespace EmployeesManager.Web.Controllers
         //    return View(emp);
         //}
 
-        //    private Employee GetEmployee(Employee newEmp, EmployeeViewModel emp)
-        //    {
-        //        newEmp.FirstName = emp.FirstName;
-        //        newEmp.LastName = emp.LastName;
-        //        newEmp.OIB = emp.OIB;
-        //        newEmp.MBO = emp.MBO;
-        //        newEmp.BirthDate = emp.BirthDate;
-        //        newEmp.Active = emp.Active;
+        [HttpPost]
+        public IActionResult Export()
+        {
+            DataTable dt = new DataTable("Grid");
+            dt.Columns.AddRange(new DataColumn[8] { new DataColumn("Ime"),
+                                        new DataColumn("Prezime"),
+                                        new DataColumn("OIB"),
+                                        new DataColumn("MBO"),
+                                        new DataColumn("Aktivnost"),
+                                        new DataColumn("Datum rođenja"),
+                                        new DataColumn("Ulica"),
+                                        new DataColumn("Kućni broj") });
 
-        //        //Address adr = new Address();
-        //        //adr.Street = emp.Street;
-        //        //adr.StreetNumber = emp.StreetNumber;
-        //        //adr.Country = emp.Country;
-        //        //adr.PostalCode = emp.PostalCode;
-        //        //adr.City = emp.City;
+            var employees = from employee in this._context.GetAll()
+                             select employee;
 
-        //        //newEmp.Address = adr;
+            foreach (var employee in employees)
+            {
+                dt.Rows.Add(employee.FirstName, employee.LastName, employee.OIB, employee.MBO, employee.Active, employee.BirthDate, employee.Street, employee.StreetNumber);
+            }
 
-        //        //Contact cnt = new Contact();
-        //        //cnt.BusinessEmail = emp.BusinessEmail;
-        //        //cnt.BusinessTelephone = emp.BusinessTelephone;
-        //        //cnt.BusinessMobilePhone = emp.BusinessMobilePhone;
-        //        //cnt.PrivateMobilePhone = emp.PrivateMobilePhone;
-        //        //cnt.PrivateEmail = emp.PrivateEmail;
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Employees.xlsx");
+                }
+            }
+        }
 
-        //        //newEmp.Contact = cnt;
+        [HttpPost]
+        public IActionResult ExportSingle(int id)
+        {
+            DataTable dt = new DataTable("Grid");
+            dt.Columns.AddRange(new DataColumn[8] { new DataColumn("Ime"),
+                                        new DataColumn("Prezime"),
+                                        new DataColumn("OIB"),
+                                        new DataColumn("MBO"),
+                                        new DataColumn("Aktivnost"),
+                                        new DataColumn("Datum rođenja"),
+                                        new DataColumn("Ulica"),
+                                        new DataColumn("Kućni broj") });
 
-        //        //Healthcare hlt = new Healthcare();
-        //        //hlt.HealthcareName = emp.HealthcareName;
-        //        //hlt.ValidUntil = emp.ValidUntil;
-        //        //hlt.Remark = emp.Remark;
+            Employee employee = _context.GetById(id);
 
-        //        //newEmp.Healthcares.Add(hlt);
+            //foreach (var education in educations)
+            //{
+            dt.Rows.Add(employee.FirstName, employee.LastName, employee.OIB, employee.MBO, employee.Active, employee.BirthDate, employee.Street, employee.StreetNumber);
+            //}
 
-        //        return newEmp;
-        //    }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", employee.FirstName+" "+employee.LastName+".xlsx");
+                }
+            }
+        }
+
     }
 }

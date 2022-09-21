@@ -7,20 +7,24 @@
 <partial name="_Notification" />
 
 <div class="container p-3">
+    @if (User.IsInRole("Admin"))
+        {
+            <div class="col-12 text-end">
+                <a asp-controller="Employee" asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> &nbsp; Novi zaposlenik</a>
+        </div>
+        }
     <div class="row pt-4">
         <div class="col-6">
             <h2 class="text-primary">Popis zaposlenika</h2>
         </div>
-        @if (User.IsInRole("Admin"))
-        {
-            <div class="col-6 text-end">
-                <a asp-controller="Employee" asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> &nbsp; Novi zaposlenik</a>
-        </div>
-        }
+        <br />
+        <form asp-controller="Employee" asp-action="Index" class="d-flex">
+                            <input class="form-control me-sm-2" type="text" name="SearchString" placeholder="Pretraga po imenu ili prezimenu">
+                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Pretraži</button>
+</form>
     </div>
-    <br /><br />
 </div>
-
+<br />
 <table class="table">
     <thead>
         <tr>
@@ -80,12 +84,18 @@
                      <td>
                         <div class="btn-group" role="group">
                     <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-primary mx-2"><i class="bi bi-card-checklist"></i> &nbsp Detalji</a>
-                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-primary mx-2" data-toggle="modal" data-target="#employeeDetails"><i class="bi bi-list-check"></i> &nbsp Popis</a>
-                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-primary mx-2"><i class="bi bi-file-earmark-arrow-down-fill"></i> &nbsp</a>
-                </div>
+                    <a asp-controller="Employee" asp-action="DetailsEmployee" asp-route-id="@item.EmployeeId" class="btn btn-primary mx-2" data-toggle="modal" data-target="#employeeDetails"><i class="bi bi-list-check"></i> &nbsp Popis</a>
+                    <form method="post" asp-controller="Employee" asp-action="ExportSingle" asp-route-id="@item.EmployeeId">
+                        <button type="submit" class="bi bi-file-earmark-arrow-down-fill btn btn-primary mx-2">&nbsp Izvoz</button>
+                    </form>
+                    </div>
                     </td>
                 }
         </tr>
 }
     </tbody>
 </table>
+
+<form method="post" asp-controller="Employee" asp-action="Export">
+        <input type="submit" value="Izvoz u Excel" />
+    </form>

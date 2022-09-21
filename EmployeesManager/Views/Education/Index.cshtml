@@ -4,25 +4,27 @@
     ViewData["Title"] = "Index";
 }
 
-<partial name="_Notification" />
-
+<partial name="_Notification"></partial>
 
 <div class="container p-3">
     <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-primary">Popis edukacija</h2>
-        </div>
         @if (User.IsInRole("Admin"))
                 {
-        <div class="col-6 text-end">
+        <div class="col-12 text-end">
             <a asp-controller="Education" asp-action="Create" class="btn btn-primary"><i class="bi bi-eyeglasses"></i> &nbsp; Nova edukacija</a>
         </div>
                 }
+        <div class="col-6">
+            <h2 class="text-primary">Popis edukacija</h2>
+        </div>
+        <br />
+        <form asp-controller="Education" asp-action="Index" class="d-flex">
+                            <input class="form-control me-sm-2" type="text" name="SearchString" placeholder="Prezraga po nazivu">
+                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Pretraži</button>
+</form>
     </div>
-    <br /><br />
-</div>
-
-<table class="table" id="CustomerGrid">
+    <br/><br/>
+    <table id="PrintPDF" class="table">
     <thead>
         <tr>
             <th>
@@ -43,9 +45,6 @@
             <th>
                 @Html.Label("Datum završetka")
             </th>
-            @*<th>
-                @Html.Label("Opis")
-            </th>*@
             <th>
                 @Html.Label("Napomena")
             </th>
@@ -76,9 +75,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EndDate)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Remark)
             </td>
@@ -100,7 +96,9 @@
                 <div class="btn-group" role="group">
                     <a asp-controller="Education" asp-action="Details" asp-route-id="@item.EducationId" class="btn btn-primary mx-2"><i class="bi bi-card-checklist"></i> &nbsp Detalji</a>
                     <a asp-controller="Education" asp-action="DetailsEmployee" asp-route-id="@item.EducationId" class="btn btn-primary mx-2"><i class="bi bi-list-check"></i> &nbsp Popis</a>
-                    <a asp-controller="Education" asp-action="Details" asp-route-id="@item.EducationId" class="btn btn-primary mx-2"><i class="bi bi-file-earmark-arrow-down-fill"></i> &nbsp</a>
+                    <form method="post" asp-controller="Education" asp-action="ExportSingle" asp-route-id="@item.EducationId">
+                        <button id="mySubmit" type="submit" class="bi bi-file-earmark-arrow-down-fill btn btn-primary mx-2">&nbsp Izvoz</button>
+                        </form>
                 </div>
             </td>
                 }
@@ -108,3 +106,17 @@
 }
     </tbody>
 </table>
+</div>
+
+    <form method="post" asp-controller="Education" asp-action="Export">
+        <input type="submit" value="Izvoz u Excel" />
+    </form>
+
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+       <script type="text/javascript">  
+         $(function () {  
+           $("#btnSubmit").click(function () {  
+             $("input[name='ExportData']").val($("#PrintPDF").html());  
+           });  
+         });  
+       </script>  *@

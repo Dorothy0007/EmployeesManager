@@ -20,6 +20,20 @@ namespace EmployeesManager.Web.Controllers
             return View(_context.GetAll().ToList());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var workplaces = from w in _context.GetAll()
+                              select w;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                workplaces = workplaces.Where(w => (w.NameLong.ToLower()).Contains(searchString) || (w.NameShort.ToLower()).Contains(searchString));
+            }
+
+            return View(workplaces.ToList());
+        }
+
         // GET: WorkplaceController/Details/5
         public ActionResult Details(int id)
         {
